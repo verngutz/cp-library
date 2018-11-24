@@ -1,0 +1,8 @@
+#!/bin/bash
+rm $1
+echo -e "\e[33mg++ -std=c++17 -Wall -DDEBUG -o $1 $1.cpp"
+g++ -std=c++17 -Wall -DDEBUG -o $1 $1.cpp
+chmod +x $1
+echo -e "\e[33m./$1 < input.txt"
+echo -e "\e[39m"
+./$1 < input.txt

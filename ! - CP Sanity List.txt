@@ -1,0 +1,30 @@
+Stuck w/o solution ideas?
+0. Keep calm.
+1. Sort the input.
+2. Consider the complement of the problem.
+3. Find an easier version of the problem (fewer constraints, fewer dimensions).
+4. CS solution too ugly? Try math. Or vice versa.
+5. Try the following techniques:
+    A. Brute force
+    B. Brute force with pruning
+    C. Greedy
+    D. DP
+    E. Binary search the answer
+    F. Flows
+6. Go through list of known data structures and algorithms.
+
+Before you implement!
+1. Check the time complexity.
+2. Planning to use a range query data structure? Try if you can prefix sum first.
+3. Planning to do binary search on array? Try if you can prefix sum first.
+4. Planning to maintain prefix/suffix minimums/maximums? Try if you can use set/map first before considering stack/deque.
+5. In general, prefer simpler implementation if it fits time limit. Be willing to spend an extra O(log n) factor to simplify implementation.
+
+Can't find the bug?
+0. Keep calm.
+1. Check overflow.
+2. Check array sizes.
+3. Check if arrays were properly initialized.
+4. Re-read the code.
+5. Print debug information.
+6. Brute force to find counterexamples.
