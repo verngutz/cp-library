@@ -63,13 +63,13 @@ vector<pair<double, double>> vertices(const pair<double, double>& center, bool f
         {-1.0 / 2, -sqrt(3) / 2}
     };
     if(not flat_top) {
-        for(auto& p : ans) {
-            swap(p.first, p.second);
+        for(auto [i, j] : ans) {
+            swap(i, j);
         }
     }
-    for(auto& p : ans) {
-        p.first += center.first;
-        p.second += center.second;
+    auto [ci, cj] = center;
+    for(auto [i, j] : ans) {
+        i += ci, j += cj;
     }
     return ans;
 }

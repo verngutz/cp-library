@@ -1,14 +1,11 @@
 #include <bits/stdc++.h>
 #include "callable.hpp/callable.hpp"
 using namespace std;
-// all ways to form pairs so that p[0] paired with p[n-1], p[1] with p[n-1], ...
-template <typename Function>
-void paired_permutations(int n, const Function& f) {
-#ifdef DEBUG
-    using actual_type = typename callable_traits<Function>::function_type;
-    using expected_type = typename callable_traits<void(vector<int>&)>::function_type;
-    static_assert(is_same<actual_type, expected_type>::value, "paired_permutations 'f' must be void(vector<int>&)");
-#endif
+// go through all ways to form unordered pairs from [0, n - 1]
+// f is the action to do on every such pairing p
+// p[0] is paired with p[n-1], p[1] with p[n-2], etc.
+// runs in n (n - 2) (n - 4) ... time
+void paired_permutations(int n, const function<void(vector<int>&)>& f) {
     vector<int> p(n);
     iota(p.begin(), p.end(), 0);
     function<void(int)> rb = [&](int i) {

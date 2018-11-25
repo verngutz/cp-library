@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename T>
-struct segtree {
+template <typename T> struct segtree {
     using Type = T;
     using DeltaType = T;
     const T zero;
@@ -23,3 +22,13 @@ struct segtree {
         return combine(ans_l, ans_r);
     }
 };
+template<typename T> ostream& operator<<(ostream& os, segtree<T>& t) {
+    os << "[";
+    bool comma = false;
+    for(int i = 0; i <= t.size; i++) {
+        if(comma) os << ", "; else comma = true;
+        os << t.query(i, i);
+    }
+    os << "]";
+    return os;
+}

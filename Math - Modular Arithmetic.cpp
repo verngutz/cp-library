@@ -44,14 +44,14 @@ struct modint {
 };
 ostream& operator<<(ostream& os, const modint& m) { return os << m.val; }
 istream& operator>>(istream& is, modint& m) { is >> m.val; m.val %= M; return is; }
-bool operator==(long long x, const modint& y) { return modint(x + M % M) == y; }
-bool operator!=(long long x, const modint& y) { return modint(x + M % M) != y; }
-bool operator< (long long x, const modint& y) { return modint(x + M % M) <  y; }
-bool operator<=(long long x, const modint& y) { return modint(x + M % M) <= y; }
-bool operator> (long long x, const modint& y) { return modint(x + M % M) >  y; }
-bool operator>=(long long x, const modint& y) { return modint(x + M % M) >= y; }
-modint operator+(long long x, const modint& y) { return modint(x + M % M) + y; }
-modint operator*(long long x, const modint& y) { return modint(x + M % M) * y; }
-modint operator-(long long x, const modint& y) { return modint(x + M % M) - y; }
-modint operator/(long long x, const modint& y) { return modint(x + M % M) / y; }
+bool operator==(long long x, const modint& y) { return modint((x + M) % M) == y; }
+bool operator!=(long long x, const modint& y) { return modint((x + M) % M) != y; }
+bool operator< (long long x, const modint& y) { return modint((x + M) % M) <  y; }
+bool operator<=(long long x, const modint& y) { return modint((x + M) % M) <= y; }
+bool operator> (long long x, const modint& y) { return modint((x + M) % M) >  y; }
+bool operator>=(long long x, const modint& y) { return modint((x + M) % M) >= y; }
+modint operator+(long long x, const modint& y) { return modint((x + M) % M) + y; }
+modint operator*(long long x, const modint& y) { return modint((x + M) % M) * y; }
+modint operator-(long long x, const modint& y) { return modint((x + M) % M) - y; }
+modint operator/(long long x, const modint& y) { return modint((x + M) % M) / y; }
 #endif

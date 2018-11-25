@@ -1,33 +1,27 @@
 #include <bits/stdc++.h>
 #include "callable.hpp/callable.hpp"
 using namespace std;
-// argmin opt(i, k) + opt(k + 1, j - 1) + c(i, j - 1)
-// <= argmin opt(i, k) + opt(k + 1, j) + c(i, j)
-// <= argmin opt(i + 1, k) + opt(k + 1, j) + c(i + 1, j)
-// must be satisfied
-// alternatively, c must satisfy for all a <= b <= c <= d:
-// quadrangle inequality: c(a, c) + c(b, d) <= c(a, d) + c(b, c)
-// monotonicity: c(b, c) <= c(a, d)
-template<typename T, size_t N, typename Function>
-T knuth(int n, const Function& c) {
-#ifdef DEBUG
-    using actual_type = typename callable_traits<Function>::function_type;
-    using expected_type = typename callable_traits<T(int, int)>::function_type;
-    static_assert(is_same<actual_type, expected_type>::value, "knuth 'c' must be T(int, int)");
-#endif
-    static T opt[N+2][N+2];
-    static int optk[N+2][N+2];
+// DP on substrings: optimum way to form binary tree from array of size N
+// cost of putting elements from index i to index j into one subtree is c(i, j)
+// solve recurrence of form OPT(i, j) = min i <= k <= j OPT(i, k) + OPT(k + 1, j) + c(i, j)
+// argmin(i, j - 1) <= argmin(i, j) <= argmin(i + 1, j) must be satisfied
+// alternatively, c must satisfy for all w <= x <= y <= z:
+// quadrangle inequality: c(w, y) + c(x, z) <= c(w, z) + c(x, y)
+// monotonicity: c(x, y) <= c(w, z)
+// runs in O(N^2) assuming c is constant time
+template<typename T, size_t N>
+T knuth(int n, const function<T(int, int)>& c) {
+    static T opt[N + 2][N + 2];
+    static int arg[N + 2][N + 2];
     memset(opt, 0, sizeof opt);
     for(int len = 1; len <= n; len++) {
         for(int i = 1, j; (j = i + len - 1) <= n; i++) {
             if(len == 1) {
-                opt[i][j] = c(i, j), optk[i][j] = i;
+                opt[i][j] = c(i, j), arg[i][j] = i;
             } else {
-                for(int k = optk[i][j-1]; k <= optk[i+1][j]; k++) {
-                    T cur = opt[i][k] + opt[k+1][j] + c(i, j);
-                    if(k == optk[i][j-1] or opt[i][j] > cur) {
-                        opt[i][j] = cur;
-                        optk[i][j] = k;
+                for(int k = arg[i][j - 1]; k <= arg[i + 1][j]; k++) {
+                    if(k == arg[i][j - 1] or opt[i][j] > opt[k + 1][j] + c(i, j)) {
+                        arg[i][j] = k, opt[i][j] = opt[k + 1][j] + c(i, j);
                     }
                 }
             }

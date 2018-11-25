@@ -15,10 +15,7 @@ Stuck w/o solution ideas?
 
 Before you implement!
 1. Check the time complexity.
-2. Planning to use a range query data structure? Try if you can prefix sum first.
-3. Planning to do binary search on array? Try if you can prefix sum first.
-4. Planning to maintain prefix/suffix minimums/maximums? Try if you can use set/map first before considering stack/deque.
-5. In general, prefer simpler implementation if it fits time limit. Be willing to spend an extra O(log n) factor to simplify implementation.
+2. Spend an extra O(log n) factor to simplify implementation if it fits time limit. .
 
 Can't find the bug?
 0. Keep calm.

@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
-// NOTE: one-indexed, don't forget to declare static inside main
-template <typename T, int N, int M>
-// template <typename T = long long, int N = 1000, int M = 1000>
-struct bit2D {
-    T t[N+1][M+1];
+// NOTE: one-indexed
+template <typename T = long long> struct bit2D {
+    const int n, m;
+    vector<vector<T>> t;
+    bit2D(int n, int m) : n(n), m(m), t(n, vector<T>(m)) {}
     void add(int r, int c, T value) {
-       for(int i = r; i <= N; i += i & -i) {
-            for(int j = c; j <= M; j += j & -j) {
+       for(int i = r; i <= n; i += i & -i) {
+            for(int j = c; j <= m; j += j & -j) {
                 t[i][j] += value;
             }
         }
@@ -22,6 +22,6 @@ struct bit2D {
         return res;
     }
     T sum(int r1, int c1, int r2, int c2) {
-        return sum(r2, c2) - sum(r1-1, c2) - sum(r2, c1-1) + sum(r1-1, c1-1);
+        return sum(r2, c2) - sum(r1 - 1, c2) - sum(r2, c1 - 1) + sum(r1 - 1, c1 - 1);
     }
 };

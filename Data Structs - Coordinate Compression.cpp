@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename T>
-vector<int> compress(vector<T>& a, int start_index = 1) {
+template <typename T> vector<int> compress(vector<T>& a, int start_index = 1) {
     vector<int> compressed(a.size());
     set<T> values(a.begin(), a.end());
     map<int, int> m;

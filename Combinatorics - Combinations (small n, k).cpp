@@ -7,7 +7,7 @@ modint C(int n, int k) {
         vector<modint> row;
         int m = c.size();
         for(int k = 0; k <= m; k++) {
-            row.push_back(k == 0 or k == m ? 1 : c[m-1][k] + c[m-1][k-1]);
+            row.push_back(k == 0 or k == m ? 1 : c[m - 1][k] + c[m - 1][k - 1]);
         }
         c.push_back(row);
     }

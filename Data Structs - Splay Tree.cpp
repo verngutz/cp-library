@@ -1,6 +1,4 @@
-template <typename T>
-class splaytree {
-public:
+template <typename T> struct splaytree {
     splaytree *l, *r, *p;
     int size;
     T val, sum;
@@ -100,9 +98,7 @@ public:
         return splaytree::join(l, r);
     }
 };
-template <typename T>
-class splaytree_interface {
-public:
+template <typename T> struct splaytree_interface {
     splaytree<T>* root = nullptr;
     splaytree<T>* find(T key) {
         root = root ? root->find(key) : root;

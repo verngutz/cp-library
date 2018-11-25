@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include "callable.hpp/callable.hpp"
 using namespace std;
 // const int N = 5000;
 long long a[N+1][N+1];
@@ -8,6 +7,7 @@ void add(int n, int i, int j, long long v) {
         a[i][j] += v;
     }
 }
+// (i, j) = top-left cell, r = number of rows
 void update(int n, int i, int j, int r, long long v = 1) {
     add(n, i, j, v);
     add(n, i, j + 1, -v);
@@ -28,19 +28,6 @@ void resolve(int n) {
     sum(n, 2, 1, 1, 0);
     sum(n, 2, 2, 1, 1);
 }
-template <typename Function>
-void proc(int n, const Function& f) {
-#ifdef DEBUG
-    using actual_type = typename callable_traits<Function>::function_type;
-    using expected_type = typename callable_traits<void(int, int)>::function_type;
-    static_assert(is_same<actual_type, expected_type>::value, "proc 'f' must be void(int, int)");
-#endif
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= n; j++) {
-            f(i, j);
-        }
-    }
-}
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -52,10 +39,12 @@ int main() {
         update(n, i, j, r, v);
     }
     resolve(n);
-    proc(n, [&](int i, int j) {
-        cout << a[i][j];
-        if(j == n) cout << endl;
-        else cout << " ";
-    });
+    for(int i = 1; i <= n; i++) {
+        for(int j = 1; j <= n; j++) {
+            cout << a[i][j];
+            if(j == n) cout << endl;
+            else cout << " ";
+        }
+    }
     return 0;
 }

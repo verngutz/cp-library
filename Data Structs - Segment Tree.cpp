@@ -1,15 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 // NOTE: one-indexed
-template <typename T, typename D>
-struct segtree {
+template <typename T, typename D> struct segtree {
     using Type = T;
     using DeltaType = D;
-    template <typename signature>
-    using f = function<signature>;
-    const T zero; const f<T(T, T)> combine; // combine two elements of list
-    const D dzero; const f<D(D, D)> dcombine; // combine two update operations
-    const f<T(T, D, int, int)> lcombine; // lazy query with segtree value T, lazy flag D, start index, end index
+    template <typename signature> using f = const function<signature>;
+    const T zero; f<T(T, T)> combine; // combine two elements of list
+    const D dzero; f<D(D, D)> dcombine; // combine two update operations
+    f<T(T, D, int, int)> lcombine; // lazy query with segtree value T, lazy flag D, start index, end index
     const int size;
     vector<T> a, st;
     vector<D> delta;
@@ -41,12 +39,12 @@ struct segtree {
             return st[p] = combine(build(L(p), s, m(s, e)), build(R(p), m(s, e) + 1, e));
         }
     }
-    segtree(T zero, f<T(T, T)> combine, D dzero, f<D(D, D)> dcombine, f<T(T, D, int, int)> lcombine, const vector<T>& a)
+    segtree(T zero, f<T(T, T)>& combine, D dzero, f<D(D, D)>& dcombine, f<T(T, D, int, int)>& lcombine, const vector<T>& a)
     : zero(zero), combine(combine), dzero(dzero), dcombine(dcombine), lcombine(lcombine), a(a), size(a.size() - 1),
     st(4 * (size + 1)), delta(4 * (size + 1)), is_lazy(4 * (size + 1)) {
         build(1, 1, size);
     }
-    segtree(T zero, f<T(T, T)> combine, D dzero, f<D(D, D)> dcombine, f<T(T, D, int, int)> lcombine, int size)
+    segtree(T zero, f<T(T, T)>& combine, D dzero, f<D(D, D)>& dcombine, f<T(T, D, int, int)>& lcombine, int size)
     : segtree(zero, combine, dzero, dcombine, lcombine, vector<T>(size + 1, zero)) {}
     T query(int l, int r, int p, int s, int e) {
         if(l <= s and e <= r) {
@@ -70,8 +68,7 @@ struct segtree {
     }
     void update(int l, int r, D v) { update(l, r, v, 1, 1, size); }
 };
-template<typename T, typename D>
-ostream& operator<<(ostream& os, segtree<T, D>& t) {
+template<typename T, typename D> ostream& operator<<(ostream& os, segtree<T, D>& t) {
     os << "[";
     bool comma = false;
     for(int i = 1; i <= t.size; i++) {

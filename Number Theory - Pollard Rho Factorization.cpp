@@ -17,16 +17,16 @@ ll rho(ll n) {
         do {
             x = f(x, c, n);
             y = f(f(y, c, n), c, n);
-            divisor = __gcd(abs(y - x), n);
+            divisor = gcd(abs(y - x), n);
         } while(divisor == 1);
         return divisor;
     }
 }
-void factorize(ll n, set<ll>& ans) {
+void factorize(ll n, vector<ll>& ans) {
     if(n == 0 or n == 1) {
         return;
     } else if(is_prime(n)) {
-        ans.insert(n);
+        ans.push_back(n);
     } else {
         ll divisor = rho(n);
         factorize(divisor, ans);

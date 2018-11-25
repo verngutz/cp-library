@@ -1,15 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 // NOTE: zero-indexed
-template <typename T>
-class sparse_table {
-private:
-    vector<int> lg;
-    vector<vector<T>> st;
-public:
+template <typename T> struct sparse_table {
     const T zero;
     const function<T(T, T)> combine;
     const int size;
+    vector<int> lg;
+    vector<vector<T>> st;
     sparse_table(T zero, const function<T(T, T)>& combine, const vector<T>& a)
     : zero(zero), combine(combine), size(a.size()), lg(size + 1) {
         lg[1] = 0;

@@ -1,25 +1,16 @@
 #include <bits/stdc++.h>
-#include "callable.hpp/callable.hpp"
-#define N 100'000
 using namespace std;
-typedef long long ll;
-struct elem { int t, v; };
 // NOTE: one-indexed
-template <typename T, typename Function>
-vector<T> sliding_window(vector<T>& a, int k, const Function& cmp) {
-#ifdef DEBUG
-    using actual_type = typename callable_traits<Function>::function_type;
-    using expected_type = typename callable_traits<bool(T, T)>::function_type;
-    static_assert(is_same<actual_type, expected_type>::value, "sliding_window 'cmp' must be bool(T, T)");
-#endif
+template <typename T>
+vector<T> sliding_window(const vector<T>& a, int k, const function<bool(T, T)>& cmp = [](T x, T y) { return x < y; }) {
     vector<T> ans;
-    deque<elem> window;
+    deque<pair<int, T>> window;
     for(int i = 1; i <= a.size(); i++) {
-        while(not window.empty() and !cmp(window.back().v, a[i])) {
+        while(not window.empty() and not cmp(window.back().second, a[i])) {
             window.pop_back();
         }
         window.push_back({i, a[i]});
-        while(window.front().t <= i - k) {
+        while(window.front().first <= i - k) {
             window.pop_front();
         }
         if(i >= k) {
@@ -28,5 +19,3 @@ vector<T> sliding_window(vector<T>& a, int k, const Function& cmp) {
     }
     return ans;
 }
-template <typename T>
-vector<T> sliding_window(vector<T>& a, int k) { return sliding_window(a, k, [](T x, T y){ return x > y; }); }

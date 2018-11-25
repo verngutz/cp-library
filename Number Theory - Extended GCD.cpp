@@ -11,7 +11,7 @@ void ex_gcd(ll a, ll b, ll& x, ll& y) {
     }
 }
 bool ex_gcd_pos(ll a, ll b, ll n, ll& x, ll& y) {
-    ll g = __gcd(a, b);
+    ll g = gcd(a, b);
     if(n % g == 0) {
         a /= g, b /= g, n /= g;
         ll xx, yy;

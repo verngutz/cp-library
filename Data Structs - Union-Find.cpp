@@ -1,9 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-class ufds {
-protected:
+struct ufds {
     vector<int> p;
-public:
     ufds(int n) : p(n + 1) {
         iota(p.begin(), p.end(), 0);
     }

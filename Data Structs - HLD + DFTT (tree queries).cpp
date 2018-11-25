@@ -2,8 +2,7 @@
 #include "Data Structs - HLD + DFTT.cpp"
 using namespace std;
 enum query_t { node, edge };
-template <query_t TQuery, typename SegmentTree>
-struct tree_queries {
+template <query_t TQuery, typename SegmentTree> struct tree_queries {
     SegmentTree& st;
     flat_tree& ft;
     vector<int> &head, &p, &d, &f;
