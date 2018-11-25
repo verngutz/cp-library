@@ -1,8 +1,8 @@
 #include <bits/stdc++.h>
 #include "Data Structs - HLD + DFTT.cpp"
 using namespace std;
-enum query_t { node, edge };
-template <query_t TQuery, typename SegmentTree> struct tree_queries {
+enum tree_t { node_values, edge_values };
+template <tree_t T, typename SegmentTree> struct tree_queries {
     SegmentTree& st;
     flat_tree& ft;
     vector<int> &head, &p, &d, &f;
@@ -39,11 +39,11 @@ template <query_t TQuery, typename SegmentTree> struct tree_queries {
     typename SegmentTree::Type path_query(int u, int v) {
         int l = ft.lca(u, v);
         auto ans = st.combine(anc_path_query(u, l), anc_path_query(l, v));
-        return TQuery == node ? st.combine(ans, st.query(d[l], d[l])) : ans;
+        return T == node_values ? st.combine(ans, st.query(d[l], d[l])) : ans;
     }
     void path_update(int u, int v, typename SegmentTree::DeltaType value) {
         int l = ft.lca(u, v);
         anc_path_update(u, l, value), anc_path_update(l, v, value);
-        if(TQuery == node) st.update(d[l], d[l], value);
+        if(T == node_values) st.update(d[l], d[l], value);
     }
 };

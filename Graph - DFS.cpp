@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 #include "Graph - Adjacency List (unweighted).cpp"
 using namespace std;
-template <bool Directed>
-void dfs(graph<Directed>& g,
+template <bool Directed> void dfs(graph<Directed>& g,
 const function<void(int, int)>& pre = [](int u, int from) {},
 const function<void(int, int)>& pos = [](int u, int from) {}) {
     vector<bool> vis(g.n + 1);

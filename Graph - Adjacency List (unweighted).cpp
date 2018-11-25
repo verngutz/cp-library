@@ -1,10 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct adj_edge { int i, u, v; };
+struct edge { int i, u, v; };
 template <bool Directed> struct graph {
     int n;
-    vector<adj_edge> edges;
-    vector<vector<adj_edge>> adj;
+    vector<edge> edges;
+    vector<vector<edge>> adj;
     graph(int n) : n(n), adj(n + 1) {}
     void add_edge(int u, int v) {
         int i = edges.size();
