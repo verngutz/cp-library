@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 struct edge { int u, v, w; };
-template <bool Directed>
-struct graph {
+template <bool Directed> struct graph {
     int n;
     vector<vector<edge>> adj;
     graph(int n) : n(n), adj(n + 1) {}
