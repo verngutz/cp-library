@@ -8,10 +8,12 @@ struct edge {
     edge* reverse;
 };
 struct graph {
+    bool has_negative_edge;
     int n;
     vector<vector<edge*>> adj;
-    graph(int n) : n(n), adj(n + 1) {}
+    graph(int n) : has_negative_edge(false), n(n), adj(n + 1) {}
     void add_edge(int u, int v, ll w, ll c) {
+        has_negative_edge |= w < 0;
         adj[u].push_back(new edge{u, v, w, c, 0});
         adj[v].push_back(new edge{v, u, -w, 0, 0, adj[u].back()});
         adj[u].back()->reverse = adj[v].back();
@@ -42,6 +44,19 @@ pair<ll, ll> min_cost_flow(graph& g, int s, int t, ll flow_limit = numeric_limit
         }
         return d[t] < numeric_limits<ll>::max();
     };
+    if(g.has_negative_edge) {
+        fill(pot.begin(), pot.end(), numeric_limits<ll>::max());
+        pot[s] = 0;
+        for(int i = 0; i < g.n - 1; i++) {
+            for(int u = 1; u <= g.n; u++) {
+                for(edge* e : g.adj[u]) {
+                    if(e->c and pot[e->u] < numeric_limits<ll>::max()) {
+                        pot[e->v] = min(pot[e->v], pot[e->u] + e->w);
+                    }
+                }
+            }
+        }
+    }
     ll flow = 0, cost = 0;
     while(flow < flow_limit and find_aug_path()) {
         ll b = flow_limit - flow;
