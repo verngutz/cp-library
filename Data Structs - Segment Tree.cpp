@@ -40,7 +40,7 @@ template <typename T, typename D> struct segtree {
         }
     }
     segtree(T zero, f<T(T, T)>& combine, D dzero, f<D(D, D)>& dcombine, f<T(T, D, int, int)>& lcombine, const vector<T>& a)
-    : zero(zero), combine(combine), dzero(dzero), dcombine(dcombine), lcombine(lcombine), a(a), size(a.size() - 1),
+    : zero(zero), combine(combine), dzero(dzero), dcombine(dcombine), lcombine(lcombine), size(a.size() - 1), a(a),
     st(4 * (size + 1)), delta(4 * (size + 1)), is_lazy(4 * (size + 1)) {
         build(1, 1, size);
     }
@@ -57,6 +57,7 @@ template <typename T, typename D> struct segtree {
         }
     }
     T query(int l, int r) { return query(l, r, 1, 1, size); }
+    T query(int i) { return query(i, i); }
     void update(int l, int r, D v, int p, int s, int e) {
         if(l <= s and e <= r) {
             lazy(p, v);
@@ -67,6 +68,7 @@ template <typename T, typename D> struct segtree {
         }
     }
     void update(int l, int r, D v) { update(l, r, v, 1, 1, size); }
+    void update(int i, D v) { update(i, i, v); }
 };
 template<typename T, typename D> ostream& operator<<(ostream& os, segtree<T, D>& t) {
     os << "[";
