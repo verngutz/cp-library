@@ -3,8 +3,7 @@
 template <bool Directed> vector<int> bfs(graph<Directed>& g, int s, const function<void(int)>& f = [](int) {}) {
     vector<int> d(g.n + 1, -1), p(g.n + 1);
     d[s] = 0, p[s] = -1;
-    queue<int> q;
-    q.push(s);
+    queue<int> q({s});
     while(not q.empty()) {
         int u = q.front(); q.pop();
         f(u);

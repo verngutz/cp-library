@@ -8,8 +8,7 @@ template <typename signature> using f = const function<signature>&;
 void flood(vector<vector<bool>>& a, int si, int sj, f<bool(int, int)> can, f<void(int, int)> f = [](int, int) {}) {
     vector<vector<int>> d(a.size(), vector<int>(a[0].size(), -1));
     d[si][sj] = 0;
-    queue<pair<int, int>> q;
-    q.push({si, sj});
+    queue<pair<int, int>> q({{si, sj}});
     while(not q.empty()) {
         auto [i, j] = q.front(); q.pop();
         f(i, j);
