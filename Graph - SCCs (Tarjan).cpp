@@ -6,7 +6,7 @@ vector<vector<int>> find_sccs(graph<1>& g) {
     int timer = 1;
     stack<int> scc_stack;
     vector<bool> in_scc_stack(g.n + 1, false);
-    vector<vector<int>> sccs;
+    vector<vector<int>> sccs = {{}};
     dfs(g, [&](int u, int from) {
         visit[u] = low[u] = timer++;
         scc_stack.push(u);
