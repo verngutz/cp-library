@@ -7,7 +7,8 @@ template <bool Directed> vector<ll> sssp(graph<Directed>& g, int s) {
     vector<ll> d(g.n + 1, numeric_limits<ll>::max());
     vector<edge> p(g.n + 1);
     d[s] = 0;
-    priority_queue<pair<ll, int>> pq({{-d[s], s}});
+    priority_queue<pair<ll, int>> pq;
+    pq.push({-d[s], s});
     while(not pq.empty()) {
         int u = pq.top().second; pq.pop();
         if(not vis[u]) {
