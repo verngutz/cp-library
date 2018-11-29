@@ -1,21 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
-// WARNING: do not add self-loops to the graph,
-// or push-relabel gets stuck pushing excess flow from a node to itself over and over
-struct edge {
-    int u, v;
-    ll c, f;
-    edge* reverse;
-};
+struct edge { int u, v; ll c, f; };
 struct graph {
     int n;
-    vector<vector<edge*>> adj;
+    vector<edge> edges;
+    vector<vector<int>> adj;
     graph(int n) : n(n), adj(n + 1) {}
     void add_edge(int u, int v, ll c) {
-        adj[u].push_back(new edge{u, v, c, 0});
-        adj[v].push_back(new edge{v, u, 0, 0, adj[u].back()});
-        adj[u].back()->reverse = adj[v].back();
+        if(u != v) {
+            adj[u].push_back(edges.size()); edges.push_back({u, v, c, 0});
+            adj[v].push_back(edges.size()); edges.push_back({v, u, 0, 0});
+        }
     }
 };
 ll max_flow(graph& g, int s, int t) {
@@ -24,23 +20,24 @@ ll max_flow(graph& g, int s, int t) {
     vector<bool> active(g.n + 1);
     queue<int> q;
     height[s] = g.n;
-    for(edge* e : g.adj[s]) {
-        e->f += e->c, e->reverse->f -= e->c;
-        excess[e->v] += e->c, excess[s] -= e->c;
-        if(excess[e->v] and not active[e->v] and e->v != s and e->v != t) {
-            q.push(e->v), active[e->v] = true;
+    auto push = [&](int u, int i, int df) {
+        edge& forward = g.edges[i];
+        edge& reverse = g.edges[i ^ 1];
+        auto [uu, v, c, f] = forward;
+        forward.f += df, reverse.f -= df;
+        excess[v] += df, excess[u] -= df;
+        if(excess[v] and not active[v] and v != s and v != t) {
+            q.push(v), active[v] = true;
         }
+    };
+    for(int i : g.adj[s]) {
+        push(s, i, g.edges[i].c);
     }
     auto discharge = [&](int u) {
-        for(int i = 0; i < g.adj[u].size() and excess[u]; i++) {
-            edge* e = g.adj[u][i];
-            if(height[u] > height[e->v] and e->c - e->f > 0) {
-                ll d = min(excess[u], e->c - e->f);
-                e->f += d, e->reverse->f -= d;
-                excess[e->v] += d, excess[u] -= d;
-                if(excess[e->v] and not active[e->v] and e->v != s and e->v != t) {
-                    q.push(e->v), active[e->v] = true;
-                }
+        for(int j = 0; j < g.adj[u].size() and excess[u]; j++) {
+            auto [uu, v, c, f] = g.edges[g.adj[u][j]];
+            if(height[u] > height[v] and c - f > 0) {
+                push(u, g.adj[u][j], min(excess[u], c - f));
             }
         }
     };
@@ -49,17 +46,15 @@ ll max_flow(graph& g, int s, int t) {
             for(int i = 1; i <= g.n; i++) {
                 if(i != s and height[i] >= height[u]) {
                     counter[height[i]]--;
-                    height[i] = max(height[i], g.n + 1);
-                    counter[height[i]]++;
+                    counter[height[i] = max(height[i], g.n + 1)]++;
                 }
             }
         } else {
             counter[height[u]]--;
             height[u] = 2 * g.n - 1;
-            for(edge* e : g.adj[u]) {
-                if(e->c - e->f > 0) {
-                    height[u] = min(height[u], height[e->v] + 1);
-                }
+            for(int i : g.adj[u]) {
+                auto [uu, v, c, f] = g.edges[i];
+                if(c - f > 0) height[u] = min(height[u], height[v] + 1);
             }
             counter[height[u]]++;
         }
