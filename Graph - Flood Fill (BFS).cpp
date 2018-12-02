@@ -23,11 +23,3 @@ void flood(vector<vector<bool>>& a, int si, int sj, f<bool(int, int)> can, f<voi
         }
     }
 }
-void block_boundaries(vector<vector<bool>>& a, int n, int m) {
-    for(int i = 0; i <= n + 1; i++) {
-        a[i][0] = a[i][m + 1] = false;
-    }
-    for(int i = 0; i <= m + 1; i++) {
-        a[0][i] = a[n + 1][i] = false;
-    }
-}
