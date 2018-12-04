@@ -8,8 +8,8 @@ vector<int> build_suffix_array(string& s) {
         c[i] = s[i];
     }
     stable_sort(sa.begin(), sa.end(), [&](int i, int j) { return c[i] < c[j]; });
-    for(int k = 1; (1 << k) <= s.size(); k++) {
-        int jump = 1 << (k - 1);
+    for(int k = 0; 1 << k <= s.size(); k++) {
+        int jump = 1 << k;
         stable_sort(sa.begin(), sa.end(), [&](int i, int j) {
             return c[i] < c[j] or (c[i] == c[j] and c[i + jump] < c[j + jump]);
         });
