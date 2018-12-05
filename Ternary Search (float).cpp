@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename Range>
-double tsearch(double L, double R, const function<Range(double)>& f, bool concave_up = true) {
+template <typename TOut> double tsearch(double L, double R, const function<TOut(double)>& f, bool concave_up = true) {
     for(int i = 0; i < 1000; i++) {
         double M1 = (2 * L + R) / 3;
         double M2 = (L + 2 * R) / 3;

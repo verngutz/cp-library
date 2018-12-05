@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename T>
-string int_to_string(T n, int radix = 10) {
+template <typename T> string int_to_string(T n, int radix = 10) {
     if(n == 0) {
         return "0";
     } else {
@@ -17,8 +16,7 @@ string int_to_string(T n, int radix = 10) {
         return ans;
     }
 }
-template <typename T>
-T string_to_int(string& s, int radix = 10) {
+template <typename T> T string_to_int(string& s, int radix = 10) {
     T ans = 0, pow = 1;
     for(int i = s.length() - 1; i >= 0; i--) {
         ans += ('0' <= s[i] and s[i] <= '9' ? s[i] - '0' : 10 + s[i] - 'A') * pow;

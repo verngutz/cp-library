@@ -1,8 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 // NOTE: one-indexed
-template <typename T>
-vector<T> sliding_window(const vector<T>& a, int k, const function<bool(T, T)>& cmp = [](T x, T y) { return x < y; }) {
+template <typename T> vector<T> sliding_window(const vector<T>& a, int k, const function<bool(T, T)>& cmp = less<T>()) {
     vector<T> ans;
     deque<pair<int, T>> window;
     for(int i = 1; i <= a.size(); i++) {

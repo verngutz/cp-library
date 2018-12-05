@@ -3,9 +3,8 @@ using namespace std;
 struct query { int L, R, i; };
 struct update { int p, x, i; };
 template <typename signature> using f = const function<signature>&;
-template <typename T>
-vector<T> mo(const vector<T>& a, const vector<query>& queries, const vector<update>& updates,
-f<void(int)> add, f<void(int)> remove, f<T()> get_ans, f<void(const update&)> do_update) {
+template <typename T> vector<T> mo(const vector<query>& queries, const vector<update>& updates,
+f<void()> reset, f<void(int)> add, f<void(int)> remove, f<T()> answer, f<void(const update&)> do_update) {
     vector<T> ans(queries.size());
     int cbrt_q = int(cbrt(queries.size()) + 1);
     sort(queries.begin(), queries.end(), [&](auto& a, auto& b) {
@@ -17,11 +16,10 @@ f<void(int)> add, f<void(int)> remove, f<T()> get_ans, f<void(const update&)> do
     };
     auto guarded_add = range_guarded(add);
     auto guarded_remove = range_guarded(remove);
-    vector<T> a_copy = a;
-    auto reset = [&]() { a_copy = a, uptr = 0, L = 0, R = -1, previ = -1; };
-    reset();
+    auto reset_and_init_pointers = [&]() { reset(), uptr = 0, L = 0, R = -1, previ = -1; };
+    reset_and_init_pointers();
     for(const query& q : queries) {
-        if(q.i < previ) reset();
+        if(q.i < previ) reset_and_init_pointers();
         while(R < q.R) guarded_add(++R);
         while(R > q.R) guarded_remove(R--);
         while(L < q.L) guarded_remove(L++);
@@ -32,7 +30,7 @@ f<void(int)> add, f<void(int)> remove, f<T()> get_ans, f<void(const update&)> do
             add(updates[uptr].i);
             uptr++;
         }
-        ans[q.i] = get_ans();
+        ans[q.i] = answer();
         previ = q.i;
     }
     return ans;

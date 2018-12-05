@@ -2,8 +2,8 @@
 using namespace std;
 struct query { int L, R, i; };
 template <typename signature> using f = const function<signature>&;
-template <typename T>
-vector<T> mo(const vector<query>& queries, f<void(int)> add, f<void(int)> remove, f<void(int, int)> answer) {
+template <typename T> vector<T> mo(const vector<query>& queries,
+f<void(int)> add, f<void(int)> remove, f<void(int, int)> answer) {
     vector<T> ans(queries.size());
     int sqrt_q = int(sqrt(queries.size()) + 1);
     sort(queries.begin(), queries.end(), [&](auto& a, auto& b) {
