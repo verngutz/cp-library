@@ -1,11 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-bool hori(int di, int dj) { return abs(di) == 0 and abs(dj) == 1; }
-bool vert(int di, int dj) { return abs(di) == 1 and abs(dj) == 0; }
-bool diag(int di, int dj) { return abs(di) == 1 and abs(dj) == 1; }
-bool can(int di, int dj) { return hori(di, dj) or vert(di, dj) or diag(di, dj); }
-template <typename signature> using f = const function<signature>&;
-void flood(vector<vector<bool>>& a, int si, int sj, f<bool(int, int)> can, f<void(int, int)> f = [](int, int) {}) {
+template <typename signature> using f = const function<signature>;
+f<bool(int, int)> hori = [](int di, int dj) { return abs(di) == 0 and abs(dj) == 1; };
+f<bool(int, int)> vert = [](int di, int dj) { return abs(di) == 1 and abs(dj) == 0; };
+f<bool(int, int)> diag = [](int di, int dj) { return abs(di) == 1 and abs(dj) == 1; };
+f<bool(int, int)> operator||(f<bool(int, int)>& f1, f<bool(int, int)>& f2) {
+    return [&](int di, int dj) { return f1(di, dj) or f2(di, dj); };
+}
+vector<vector<int>> flood(vector<vector<int>>& a, int si, int sj,
+f<bool(int, int)>& can, f<void(int, int)>& f = [](int, int) {}) {
     vector<vector<int>> d(a.size(), vector<int>(a[0].size(), -1));
     d[si][sj] = 0;
     queue<pair<int, int>> q({{si, sj}});
@@ -22,4 +25,5 @@ void flood(vector<vector<bool>>& a, int si, int sj, f<bool(int, int)> can, f<voi
             }
         }
     }
+    return d;
 }
