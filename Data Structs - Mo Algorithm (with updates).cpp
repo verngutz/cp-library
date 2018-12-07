@@ -1,14 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct query { int L, R, i; };
-struct update { int p, x, i; };
+struct query { int i, L, R; };
+struct update { int i, p, x; };
 template <typename signature> using f = const function<signature>&;
-template <typename T> vector<T> mo(const vector<query>& queries, const vector<update>& updates,
+template <typename T> vector<T> mo(int n, const vector<query>& queries, const vector<update>& updates,
 f<void()> reset, f<void(int)> add, f<void(int)> remove, f<T()> answer, f<void(const update&)> do_update) {
     vector<T> ans(queries.size());
-    int cbrt_q = int(cbrt(queries.size()) + 1);
+    int cbrt_n = int(cbrt(n) + 1);
     sort(queries.begin(), queries.end(), [&](auto& a, auto& b) {
-        return tuple(a.L / cbrt_q, a.R / cbrt_q, a.i) < tuple(b.L / cbrt_q, b.R / cbrt_q, b.i);
+        return tuple(a.L / cbrt_n, a.R / cbrt_n, a.i) < tuple(b.L / cbrt_n, b.R / cbrt_n, b.i);
     });
     int L, R, previ, uptr;
     auto range_guarded = [&](function<void(int)> f) {
