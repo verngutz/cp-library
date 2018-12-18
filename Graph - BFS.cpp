@@ -7,7 +7,7 @@ template <bool Directed> vector<int> bfs(graph<Directed>& g, int s, const functi
     while(not q.empty()) {
         int u = q.front(); q.pop();
         f(u);
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(d[v] == -1) {
                 d[v] = d[u] + 1, p[v] = u;
                 q.push(v);

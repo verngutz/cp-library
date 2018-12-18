@@ -14,7 +14,7 @@ pair<deque<int>, vector<int>> find_centers(graph<0>& g) {
     }
     for(int i = 0; i < q.size(); i++) {
         int u = q[i];
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(--degree[v] == 1) {
                 height[v] = height[u] + 1;
                 q.push_back(v);

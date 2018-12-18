@@ -10,7 +10,7 @@ pair<vector<bool>, vector<vector<int>>> find_bccs(graph<0>& g) {
     function<void(int, int)> dfs = [&](int u, int from) {
         visit[u] = low[u] = timer++;
         int dfs_children = 0;
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(not visit[v]) {
                 s.push(i);
                 edge_to[v] = i;
@@ -47,7 +47,7 @@ pair<vector<int>, graph<0>> build_block_cut_tree(graph<0>& g, vector<bool>& cut_
     }
     graph<0> block_cut_tree(n_cut_nodes + bccs.size() - 1);
     for(int u = 1; u <= g.n; u++) {
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(cut_node[u]) {
                 block_cut_tree.add_edge(u, bcc_id[i]);
             }

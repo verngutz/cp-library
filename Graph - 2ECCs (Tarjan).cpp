@@ -10,8 +10,7 @@ pair<vector<bool>, vector<vector<int>>> find_2eccs(graph<0>& g) {
     function<void(int, int)> dfs = [&](int u, int from) {
         visit[u] = low[u] = timer++;
         s.push(u);
-        for(auto& e : g.adj[u]) {
-            int i = e.i, u = e.u, v = e.v;
+        for(auto [u, v, i] : g.adj[u]) {
             if(not visit[v]) {
                 edge_to[v] = i;
                 dfs(v, u);
@@ -48,7 +47,7 @@ pair<vector<int>, graph<0>> build_bridge_tree(graph<0>& g, vector<bool>& cut_edg
     }
     graph<0> bridge_tree(_2eccs.size() - 1);
     for(int u = 1; u <= g.n; u++) {
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(cut_edge[i]) {
                 bridge_tree.add_edge(_2ecc_id[u], _2ecc_id[v]);
             }

@@ -8,7 +8,7 @@ const function<void(int, int)>& pos = [](int u, int from) {}) {
     function<void(int, int)> dfs = [&](int u, int from) {
         vis[u] = true;
         pre(u, from);
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(not vis[v]) {
                 dfs(v, u);
             }

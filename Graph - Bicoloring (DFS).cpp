@@ -6,7 +6,7 @@ pair<bool, vector<bool>> bicolor(graph<0>& g) {
     dfs(g, [&](int u, int from) {
         color[u] = from ? not color[from] : true;
     }, [&](int u, int) {
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             can &= color[v] != color[u];
         }
     });

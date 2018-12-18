@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-struct edge { int i, u, v; };
+struct edge { int u, v, i; };
 template <bool Directed> struct graph {
     int n;
     vector<edge> edges;
@@ -8,8 +8,8 @@ template <bool Directed> struct graph {
     graph(int n) : n(n), adj(n + 1) {}
     void add_edge(int u, int v) {
         int i = edges.size();
-        edges.push_back({i, u, v});
-        adj[u].push_back({i, u, v});
-        if(not Directed) adj[v].push_back({i, v, u});
+        edges.push_back({u, v, i});
+        adj[u].push_back({u, v, i});
+        if(not Directed) adj[v].push_back({v, u, i});
     }
 };

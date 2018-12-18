@@ -12,7 +12,7 @@ vector<vector<int>> find_sccs(graph<1>& g) {
         scc_stack.push(u);
         in_scc_stack[u] = true;
     }, [&](int u, int from) {
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(in_scc_stack[v]) low[u] = min(low[u], low[v]);
         }
         if(visit[u] == low[u]) {
@@ -37,7 +37,7 @@ graph<1> build_scc_graph(graph<1>& g) {
     }
     graph<1> scc_graph(sccs.size() - 1);
     for(int u = 1; u <= g.n; u++) {
-        for(auto [i, u, v] : g.adj[u]) {
+        for(auto [u, v, i] : g.adj[u]) {
             if(scc_id[u] != scc_id[v]) {
                 scc_graph.add_edge(scc_id[u], scc_id[v]);
             }
