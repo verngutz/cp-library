@@ -7,7 +7,7 @@ ll max_histogram_rectangle(const vector<ll>& a) {
     vector<int> right_nearest = right_nearest_smaller_values(a);
     ll ans = 0;
     for(int i = 0; i < a.size(); i++) {
-        ans = max(ans, a[i] * (right_nearest[i] - left_nearest[i] + 1));
+        ans = max(ans, a[i] * (right_nearest[i] - left_nearest[i] - 1));
     }
     return ans;
 }
