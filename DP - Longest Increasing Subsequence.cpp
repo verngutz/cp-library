@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #include "Binary Search.cpp"
 using namespace std;
-typedef long long ll;
+using ll = long long;
 // NOTE: zero-indexed, returns indices of LIS, not actual sequence
 template<class T>
 vector<T> LIS(const vector<T>& a) {
