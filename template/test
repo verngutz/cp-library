@@ -1,16 +1,10 @@
 #!/bin/bash
 rm $1
-echo -e "\e[33mg++ -std=c++17 -Wall -g -DDEBUG -o $1 $1.cpp"
-g++ -std=c++17 -Wall -g -DDEBUG -o $1 $1.cpp
+echo -e "\e[33mg++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o $1 $1.cpp"
+g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o $1 $1.cpp
 echo -e "\e[33mchmod +x $1"
 echo -e "\e[39m"
 chmod +x $1
-echo -e "\e[33mulimit -v 512000"
-echo -e "\e[39m"
-ulimit -v 512000
-echo -e "\e[33mvalgrind --track-origins=yes --leak-check=full ./$1 < input.txt"
-echo -e "\e[39m"
-valgrind --track-origins=yes --leak-check=full ./$1 < input.txt
 echo -e "\e[33m./$1 < input.txt"
 echo -e "\e[39m"
 ./$1 < input.txt
