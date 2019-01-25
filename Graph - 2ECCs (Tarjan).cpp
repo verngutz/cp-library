@@ -48,7 +48,7 @@ pair<vector<int>, graph<0>> build_bridge_tree(graph<0>& g, vector<bool>& cut_edg
     graph<0> bridge_tree(_2eccs.size() - 1);
     for(int u = 1; u <= g.n; u++) {
         for(auto [u, v, i] : g.adj[u]) {
-            if(cut_edge[i]) {
+            if(cut_edge[i] and u < v) {
                 bridge_tree.add_edge(_2ecc_id[u], _2ecc_id[v]);
             }
         }

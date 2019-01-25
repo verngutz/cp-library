@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
 struct edge { int u, v, w; };
+ostream& operator<<(ostream& os, const edge& e) {
+    os << "(" << e.u << ", " << e.v << ")";
+    return os;
+}
 template <bool Directed> struct graph {
     int n;
     vector<vector<edge>> adj;
