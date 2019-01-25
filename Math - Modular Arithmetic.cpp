@@ -2,13 +2,15 @@
 #define __MODINT_INCLUDED_
 // WARNING: use with caution; significant constant factor slowdown
 #include <bits/stdc++.h>
+#include "Math - Fast Pow.cpp"
 using namespace std;
 using ll = long long;
-// const ll M = 1'000'000'007;
+const ll M = 1'000'000'007;
 struct modint {
     ll val;
     modint() : val(0) {}
     modint(ll val) : val(val) {}
+    modint(const modint& m) : val(m.val) {}
     explicit operator ll() const { return val; }
     bool operator==(const modint& y) const { return val == y.val; }
     bool operator!=(const modint& y) const { return val != y.val; }
@@ -16,29 +18,21 @@ struct modint {
     bool operator<=(const modint& y) const { return val <= y.val; }
     bool operator> (const modint& y) const { return val >  y.val; }
     bool operator>=(const modint& y) const { return val >= y.val; }
-    modint operator+(const modint& y) const { return (val + y.val) % M; }
-    modint operator*(const modint& y) const { return val * y.val % M; }
-    modint operator^(const ll y) const {
-        if(y == 0) {
-            return 1;
-        } else {
-            modint z = *this^(y / 2);
-            return z * z * (y % 2 ? *this : 1);
-        }
-    }
-    modint operator^(const modint& y) const { return *this ^ y.val; }
-    modint operator-() const { return M - val; }
-    modint operator~() const { return *this ^ (M - 2); }
-    modint operator-(const modint& y) const { return *this + -y; }
-    modint operator/(const modint& y) const { return *this * ~y; }
     modint& operator=(const modint& y) { val = y.val; return *this; }
-    modint& operator+=(const modint& y) { return *this = *this + y; }
-    modint& operator*=(const modint& y) { return *this = *this * y; }
-    modint& operator^=(const modint& y) { return *this = *this ^ y; }
-    modint& operator-=(const modint& y) { return *this = *this - y; }
-    modint& operator/=(const modint& y) { return *this = *this / y; }
-    modint& operator++() { return *this += 1; }
-    modint& operator--() { return *this -= 1; }
+    modint& operator+=(const modint& y) { val += y.val; val -= val >= M ? M : 0; return *this; }
+    modint& operator-=(const modint& y) { val -= y.val; val += val <  0 ? M : 0; return *this; }
+    modint& operator*=(const modint& y) { val = (val * y.val) % M; return *this; }
+    modint& operator/=(const modint& y) { val = (val * fpow(y.val, M - 2)) % M; return *this; }
+    modint& operator^=(ll y) { fpow_eq(*this, y); return *this; }
+    modint operator+(const modint& y) const { return modint(val) += y; }
+    modint operator-(const modint& y) const { return modint(val) -= y; }
+    modint operator*(const modint& y) const { return modint(val) *= y; }
+    modint operator/(const modint& y) const { return modint(val) /= y; }
+    modint operator^(ll y) const { return modint(val) ^= y; }
+    modint operator-() const { return modint(0) -= *this; }
+    modint operator~() const { return modint(1) /= *this; }
+    modint& operator++() { val = val == M - 1 ? 0 : val + 1; return *this; }
+    modint& operator--() { val = val == 0 ? M - 1 : val - 1; return *this; }
     modint operator++(int) { modint m = *this; ++(*this); return m; }
     modint operator--(int) { modint m = *this; --(*this); return m; }
 };
