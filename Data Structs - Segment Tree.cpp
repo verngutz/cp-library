@@ -56,7 +56,7 @@ template <typename T, typename D> struct segtree {
             return combine(query(l, r, L(p), s, m(s, e)), query(l, r, R(p), m(s, e) + 1, e));
         }
     }
-    T query(int l, int r) { return query(l, r, 1, 1, size); }
+    T query(int l, int r) { return l <= r ? query(l, r, 1, 1, size) : zero; }
     T query(int i) { return query(i, i); }
     void update(int l, int r, D v, int p, int s, int e) {
         if(l <= s and e <= r) {
@@ -67,7 +67,7 @@ template <typename T, typename D> struct segtree {
             pull(p, s, e);
         }
     }
-    void update(int l, int r, D v) { update(l, r, v, 1, 1, size); }
+    void update(int l, int r, D v) { if(l <= r) update(l, r, v, 1, 1, size); }
     void update(int i, D v) { update(i, i, v); }
 };
 template<typename T, typename D> ostream& operator<<(ostream& os, segtree<T, D>& t) {
@@ -75,7 +75,7 @@ template<typename T, typename D> ostream& operator<<(ostream& os, segtree<T, D>&
     bool comma = false;
     for(int i = 1; i <= t.size; i++) {
         if(comma) os << ", "; else comma = true;
-        os << t.query(i, i);
+        os << t.query(i);
     }
     os << "]";
     return os;

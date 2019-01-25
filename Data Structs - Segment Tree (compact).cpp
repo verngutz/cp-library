@@ -8,7 +8,7 @@ template <typename T> struct segtree {
     const int size;
     vector<T> tree;
     segtree(T zero, const function<T(T, T)>& combine, int size)
-    : zero(zero), combine(combine), size(size + 1), tree(2 * (size + 1), zero) {}
+    : zero(zero), combine(combine), size(size), tree(2 * (size + 1), zero) {}
     void update(int i, T x) { // arr[i] = x
         for(tree[i += size] = x; i >>= 1; )
             tree[i] = combine(tree[i << 1], tree[(i << 1) | 1]);
@@ -21,13 +21,14 @@ template <typename T> struct segtree {
         }
         return combine(ans_l, ans_r);
     }
+    T query(int i) { return query(i, i); }
 };
 template<typename T> ostream& operator<<(ostream& os, segtree<T>& t) {
     os << "[";
     bool comma = false;
     for(int i = 0; i <= t.size; i++) {
         if(comma) os << ", "; else comma = true;
-        os << t.query(i, i);
+        os << t.query(i);
     }
     os << "]";
     return os;
