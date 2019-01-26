@@ -22,7 +22,7 @@ struct modint {
     modint& operator+=(const modint& y) { val += y.val; val -= val >= M ? M : 0; return *this; }
     modint& operator-=(const modint& y) { val -= y.val; val += val <  0 ? M : 0; return *this; }
     modint& operator*=(const modint& y) { val = (val * y.val) % M; return *this; }
-    modint& operator/=(const modint& y) { val = (val * fpow(y.val, M - 2)) % M; return *this; }
+    modint& operator/=(const modint& y) { val = (val * fpow(y, M - 2).val) % M; return *this; }
     modint& operator^=(ll y) { fpow_eq(*this, y); return *this; }
     modint operator+(const modint& y) const { return modint(val) += y; }
     modint operator-(const modint& y) const { return modint(val) -= y; }
