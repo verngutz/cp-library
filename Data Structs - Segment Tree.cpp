@@ -1,6 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-// NOTE: one-indexed
+int LSB(int x) { return x & -x; }
+int log2(int x) { return 31 - __builtin_clz(x); }
+int st_size(int size) {
+    return ((size == LSB(size) ? size : 1 << (log2(size) + 1)) << 1) - 1;
+}
 template <typename T, typename D> struct segtree {
     using Type = T;
     using DeltaType = D;
@@ -9,12 +13,12 @@ template <typename T, typename D> struct segtree {
     const D dzero; f<D(D, D)> dcombine; // combine two update operations
     f<T(T, D, int, int)> lcombine; // lazy query with segtree value T, lazy flag D, start index, end index
     const int size;
-    vector<T> a, st;
+    vector<T> st;
     vector<D> delta;
     vector<bool> is_lazy;
-    int L(int p) { return 2 * p; }
-    int R(int p) { return 2 * p + 1; }
-    int m(int s, int e) { return (s + e) / 2; }
+    int L(int p) { return (p << 1) + 1; }
+    int R(int p) { return (p << 1) + 2; }
+    int m(int s, int e) { return (s + e) >> 1; }
     void pull(int p, int s, int e) {
         st[p] = combine(get_val(L(p), s, m(s, e)), get_val(R(p), m(s, e) + 1, e));
     }
@@ -31,18 +35,18 @@ template <typename T, typename D> struct segtree {
     T get_val(int p, int s, int e) {
         return is_lazy[p] ? lcombine(st[p], delta[p], s, e) : st[p];
     }
-    T build(int p, int s, int e) {
+    T build(const vector<T>& a, int p, int s, int e) {
         delta[p] = dzero, is_lazy[p] = false;
         if(s == e) {
             return st[p] = a[s];
         } else {
-            return st[p] = combine(build(L(p), s, m(s, e)), build(R(p), m(s, e) + 1, e));
+            return st[p] = combine(build(a, L(p), s, m(s, e)), build(a, R(p), m(s, e) + 1, e));
         }
     }
     segtree(T zero, f<T(T, T)>& combine, D dzero, f<D(D, D)>& dcombine, f<T(T, D, int, int)>& lcombine, const vector<T>& a)
-    : zero(zero), combine(combine), dzero(dzero), dcombine(dcombine), lcombine(lcombine), size(a.size() - 1), a(a),
-    st(4 * (size + 1)), delta(4 * (size + 1)), is_lazy(4 * (size + 1)) {
-        build(1, 1, size);
+    : zero(zero), combine(combine), dzero(dzero), dcombine(dcombine), lcombine(lcombine), size(a.size()),
+    st(st_size(size)), delta(st_size(size)), is_lazy(st_size(size)) {
+        build(a, 0, 0, size - 1);
     }
     segtree(T zero, f<T(T, T)>& combine, D dzero, f<D(D, D)>& dcombine, f<T(T, D, int, int)>& lcombine, int size)
     : segtree(zero, combine, dzero, dcombine, lcombine, vector<T>(size + 1, zero)) {}
@@ -56,7 +60,7 @@ template <typename T, typename D> struct segtree {
             return combine(query(l, r, L(p), s, m(s, e)), query(l, r, R(p), m(s, e) + 1, e));
         }
     }
-    T query(int l, int r) { return l <= r ? query(l, r, 1, 1, size) : zero; }
+    T query(int l, int r) { return l <= r ? query(l, r, 0, 0, size - 1) : zero; }
     T query(int i) { return query(i, i); }
     void update(int l, int r, D v, int p, int s, int e) {
         if(l <= s and e <= r) {
@@ -67,13 +71,13 @@ template <typename T, typename D> struct segtree {
             pull(p, s, e);
         }
     }
-    void update(int l, int r, D v) { if(l <= r) update(l, r, v, 1, 1, size); }
+    void update(int l, int r, D v) { if(l <= r) update(l, r, v, 0, 0, size - 1); }
     void update(int i, D v) { update(i, i, v); }
 };
 template<typename T, typename D> ostream& operator<<(ostream& os, segtree<T, D>& t) {
     os << "[";
     bool comma = false;
-    for(int i = 1; i <= t.size; i++) {
+    for(int i = 0; i <= t.size; i++) {
         if(comma) os << ", "; else comma = true;
         os << t.query(i);
     }
