@@ -2,7 +2,7 @@
 using namespace std;
 // DP on partitions: optimum partition of array of size SIZE into PARTS cells
 // cost of putting elements from index i to index j into one cell is c(i, j)
-// solve recurrence of form OPT(p, j) = min j < i OPT(p - 1, i) + c(i, j)
+// solve recurrence of form OPT(p, j) = min i < j OPT(p - 1, i) + c(i, j)
 // argmin(p, j) <= argmin(p, j + 1) must be satisfied
 // runs in O(PARTS SIZE lg SIZE) assuming c is constant time
 template<typename T, size_t PARTS, size_t SIZE>
