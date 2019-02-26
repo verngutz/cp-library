@@ -56,10 +56,10 @@ vector<string> split(const string& s, char c) {
 }
 #define err(args...) { error(split(#args, ' ').begin(), args); }
 void error(vector<string>::iterator it) {
-    cerr << endl;
+    cerr << "\033[0m" << endl;
 }
 template<typename T, typename... Args>
 void error(vector<string>::iterator it, T a, Args... args) {
-	cerr << it->substr((*it)[0] == ' ', it->back() == ',' ? it->size() - 1 : it->size()) << " = " << a << "; ";
+	cerr << "\033[0;32;1m" << it->substr((*it)[0] == ' ', it->back() == ',' ? it->size() - 1 : it->size()) << " = " << a << "; ";
 	error(++it, args...);
 }
