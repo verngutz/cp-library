@@ -3,15 +3,19 @@
 // WARNING: use with caution; significant constant factor slowdown
 #include <bits/stdc++.h>
 #include "Math - Fast Pow.cpp"
+#include "Number Theory - Totient.cpp"
 using namespace std;
-using ll = long long;
-const ll M = 1'000'000'007;
+int M, PHI_M;
+void set_M(int m) {
+    M = m, PHI_M = phi(m);
+}
 struct modint {
-    ll val;
+    int val;
     modint() : val(0) {}
-    modint(ll val) : val(val) {}
+    modint(int val) : val(val % M) { val += val < 0 ? M : 0; }
+    modint(long long val) : modint(int(val % M)) {}
     modint(const modint& m) : val(m.val) {}
-    explicit operator ll() const { return val; }
+    explicit operator int() const { return val; }
     bool operator==(const modint& y) const { return val == y.val; }
     bool operator!=(const modint& y) const { return val != y.val; }
     bool operator< (const modint& y) const { return val <  y.val; }
@@ -21,8 +25,8 @@ struct modint {
     modint& operator=(const modint& y) { val = y.val; return *this; }
     modint& operator+=(const modint& y) { val += y.val; val -= val >= M ? M : 0; return *this; }
     modint& operator-=(const modint& y) { val -= y.val; val += val <  0 ? M : 0; return *this; }
-    modint& operator*=(const modint& y) { val = (val * y.val) % M; return *this; }
-    modint& operator/=(const modint& y) { val = (val * fpow(y, M - 2).val) % M; return *this; }
+    modint& operator*=(const modint& y) { val = ll(val) * y.val % M; return *this; }
+    modint& operator/=(const modint& y) { val = ll(val) * fpow(y, PHI_M - 1).val % M; return *this; }
     modint& operator^=(ll y) { fpow_eq(*this, y); return *this; }
     modint operator+(const modint& y) const { return modint(val) += y; }
     modint operator-(const modint& y) const { return modint(val) -= y; }
