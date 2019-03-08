@@ -47,7 +47,7 @@ hash_struct make_prefix_hash2(string& s) {
     hash_struct h(M2, s.size(), modmul2);
     for(int i = 0; i < s.size(); i++) {
         h.prefix[i] = modadd(modmul2(i ? h.prefix[i - 1] : 0, X2), s[i], M2);
-        h.mpow[i] = i ? modmul1(h.mpow[i - 1], X2) : 1;
+        h.mpow[i] = i ? modmul2(h.mpow[i - 1], X2) : 1;
     }
     return h;
 }
