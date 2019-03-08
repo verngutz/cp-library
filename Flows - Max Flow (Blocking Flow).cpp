@@ -37,7 +37,7 @@ ll max_flow(graph& g, int s, int t) {
         for(int& j = adj_ptr[u]; j < g.adj[u].size(); j++) {
             edge& forward = g.edges[g.adj[u][j]];
             edge& reverse = g.edges[g.adj[u][j] ^ 1];
-            auto [uu, v, c, f] = forward;
+            auto& [uu, v, c, f] = forward;
             if(ll df; d[v] == d[u] + 1 and c - f > 0 and (df = augment(v, min(b, c - f)))) {
                 f += df, reverse.f -= df;
                 return df;
