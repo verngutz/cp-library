@@ -4,6 +4,8 @@ using namespace std;
 // cost of putting elements from index i to index j into one cell is c(i, j)
 // solve recurrence of form OPT(p, j) = min i < j OPT(p - 1, i) + c(i, j)
 // argmin(p, j) <= argmin(p, j + 1) must be satisfied
+// alternatively, c must satisfy for all w <= x <= y <= z:
+// quadrangle inequality: c(w, y) + c(x, z) <= c(w, z) + c(x, y)
 // runs in O(PARTS SIZE lg SIZE) assuming c is constant time
 template<typename T, size_t PARTS, size_t SIZE>
 T dnc(int parts, int n, const function<T(int, int)>& c) {
