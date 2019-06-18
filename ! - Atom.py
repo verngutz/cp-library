@@ -7,16 +7,19 @@ cson = {
     'Linux': '/home/atpms/.atom/snippets.cson'
 }
 
-def valid(f):
-    return os.path.isfile(f) and f.endswith('.cpp') and not f.startswith('[') and not f.startswith('_')
+def valid_cpp(f):
+    return os.path.isfile(f) and f.endswith('.cpp') and f[0] not in ('[', '_', '!')
 
-def get_name(cpp_file):
+def valid_py(f):
+    return os.path.isfile(f) and f.endswith('.py') and f[0] not in ('[', '_', '!')
+
+def get_name(file_name):
     try:
-        return cpp_file[cpp_file.index('-')+2:-4]
+        return file_name[file_name.index('-')+2:file_name.index('.')]
     except ValueError:
-        return cpp_file[:-4]
+        return file_name[:file_name.index('.')]
 
-snippets = [{
+cpp_extras = [{
     'name': 'pi',
     'prefix': 'pi',
     'body': """
@@ -131,16 +134,19 @@ def make_snippet(name, prefix, body, file):
     if body:
         print("\t\t'body': \"\"\"", file=file)
         for line in body:
-            if name == 'Template' or not line.startswith(('#include', 'using namespace', 'using ll')) or line.startswith(('#include <ext', 'using namespace __gnu')):
+            if (name  == 'Template'
+                or not line.startswith(('#include', 'using namespace', 'using ll', 'from', 'import'))
+                or line.startswith(('#include <ext', 'using namespace __gnu'))):
                 print(line, end='', file=file)
         print('"""', file=file)
     else:
         print("\t\t'disabled': true", file=file)
 
 with open(cson[platform.system()], encoding='utf-8', mode='w') as f:
-    print("'.source.cpp':", file=f)
-    for cpp_file in [f for f in os.listdir('.') if valid(f)]:
-        with open(cpp_file, encoding='utf-8', mode='r') as source:
-            make_snippet(get_name(cpp_file), get_name(cpp_file), source, f)
-    for snippet in snippets:
-        make_snippet(snippet['name'], snippet['prefix'], snippet['body'].splitlines(True)[1:], f)
+    for source_file, valid_f, extras in [('.source.cpp', valid_cpp, cpp_extras), ('.source.python', valid_py, [])]:
+        print(f"'{source_file}':", file=f)
+        for file_name in [f for f in os.listdir('.') if valid_f(f)]:
+            with open(file_name, encoding='utf-8', mode='r') as source:
+                make_snippet(get_name(file_name), get_name(file_name), source, f)
+        for snippet in extras:
+            make_snippet(snippet['name'], snippet['prefix'], snippet['body'].splitlines(True)[1:], f)
