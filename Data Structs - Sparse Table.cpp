@@ -20,8 +20,7 @@ template <typename T> struct sparse_table {
             }
         }
     }
-    T query(int i, int j) {
-        int k = lg[j - i + 1];
-        return combine(st[k][i], st[k][j - (1 << k) + 1]);
+    T query(int i, int j, int k = 0) {
+        return i <= j ? k = lg[j - i + 1], combine(st[k][i], st[k][j - (1 << k) + 1]) : zero;
     }
 };
