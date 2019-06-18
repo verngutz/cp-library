@@ -4,7 +4,7 @@ template <typename T> T bsearch(T L, T R, const function<bool(T)>& can, bool lef
     T& feasible = left_feasible ? L : R;
     T& infeasible = left_feasible ? R : L;
     while(R - L > 1) {
-        T M = (L + R) / 2;
+        T M = L + (R - L) / 2;
         (can(M) ? feasible : infeasible) = M;
     }
     return feasible;

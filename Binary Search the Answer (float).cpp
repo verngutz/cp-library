@@ -4,7 +4,7 @@ double bsearch(double L, double R, const function<bool(double)>& can, bool left_
     double& feasible = left_feasible ? L : R;
     double& infeasible = left_feasible ? R : L;
     for(int i = 0; i < 100; i++) {
-        double M = (L + R) / 2;
+        double M = L + (R - L) / 2;
         (can(M) ? feasible : infeasible) = M;
     }
     return feasible;
