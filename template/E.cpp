@@ -5,6 +5,7 @@
 #endif
 using namespace std;
 using ll = long long;
+template <typename T> using lim = numeric_limits<T>;
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
