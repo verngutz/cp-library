@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import sys, subprocess, itertools
-from random import randint, choice
+from random import choice, randint, sample
 from string import ascii_lowercase, ascii_uppercase
 
 tests = []
@@ -17,7 +17,7 @@ def print_test(test, input_file=sys.stdout):
 if len(sys.argv) == 1:
     print_test(make_single_test())
 else:
-    for i, test in tests or enumerate(make_single_test() for i in itertools.count()):
+    for i, test in enumerate(tests or (make_single_test() for i in itertools.count())):
         print("\033[1;34;40m")
         print("Test Case {}".format(i))
         with open('input.txt', 'w') as input_file:
