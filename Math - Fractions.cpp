@@ -26,15 +26,15 @@ struct fraction {
     fraction& operator-=(const fraction& f) { return *this = *this - f; }
     fraction& operator*=(const fraction& f) { return *this = *this * f; }
     fraction& operator/=(const fraction& f) { return *this = *this / f; }
+    friend ostream& operator<<(ostream& os, const fraction& f) { return os << f.n << "/" << f.d; }
+    friend bool operator==(long long x, const fraction& y) { return fraction(x) == y; }
+    friend bool operator!=(long long x, const fraction& y) { return fraction(x) != y; }
+    friend bool operator< (long long x, const fraction& y) { return fraction(x) <  y; }
+    friend bool operator<=(long long x, const fraction& y) { return fraction(x) <= y; }
+    friend bool operator> (long long x, const fraction& y) { return fraction(x) >  y; }
+    friend bool operator>=(long long x, const fraction& y) { return fraction(x) >= y; }
+    friend fraction operator+(long long x, const fraction& y) { return fraction(x) + y; }
+    friend fraction operator*(long long x, const fraction& y) { return fraction(x) * y; }
+    friend fraction operator-(long long x, const fraction& y) { return fraction(x) - y; }
+    friend fraction operator/(long long x, const fraction& y) { return fraction(x) / y; }
 };
-ostream& operator<<(ostream& os, const fraction& f) { return os << f.n << "/" << f.d; }
-bool operator==(long long x, const fraction& y) { return fraction(x) == y; }
-bool operator!=(long long x, const fraction& y) { return fraction(x) != y; }
-bool operator< (long long x, const fraction& y) { return fraction(x) <  y; }
-bool operator<=(long long x, const fraction& y) { return fraction(x) <= y; }
-bool operator> (long long x, const fraction& y) { return fraction(x) >  y; }
-bool operator>=(long long x, const fraction& y) { return fraction(x) >= y; }
-fraction operator+(long long x, const fraction& y) { return fraction(x) + y; }
-fraction operator*(long long x, const fraction& y) { return fraction(x) * y; }
-fraction operator-(long long x, const fraction& y) { return fraction(x) - y; }
-fraction operator/(long long x, const fraction& y) { return fraction(x) / y; }

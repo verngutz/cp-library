@@ -1,13 +1,14 @@
 #include <bits/stdc++.h>
-#include "Math - Modular Arithmetic.cpp"
+#include "Number Theory - Mod Pow.cpp"
+#include "Number Theory - Totient.cpp"
 using namespace std;
-// find all x (mod M) such that a^x = b (mod c), or log_a b = x (mod c)
-vector<ll> dlog(ll a, ll b, ll c) {
+// find all/one x (mod M) such that a^x = b (mod c), or log_a b = x (mod c)
+vector<ll> dlog(ll a, ll b, ll c, bool find_one = false) {
     a %= c, b %= c;
     ll offset = 0, g;
     while((g = __gcd(a, c)) > 1 and b % g == 0) {
-        set_M(c /= g);
-        b = int(b / g / modint(a / g));
+        c /= g;
+        b = int(b / g * mpow(a / g, phi(c) - 1, c));
         offset++;
     }
     vector<ll> ans;
@@ -15,7 +16,11 @@ vector<ll> dlog(ll a, ll b, ll c) {
         ll n = ll(sqrt(c) + 1), f1 = 1, f2 = 1;
         unordered_map<ll, vector<ll>> m;
         for(ll q = 0; q <= n; q++) {
-            m[b * f1 % c].push_back(q);
+            if(find_one) {
+                m[b * f1 % c] = {q};
+            } else {
+                m[b * f1 % c].push_back(q);
+            }
             if(q < n) f1 = f1 * a % c;
         }
         for(ll p = 1; p <= n; p++) {
@@ -24,6 +29,7 @@ vector<ll> dlog(ll a, ll b, ll c) {
                 for(ll q : m[f2]) {
                     ans.push_back(n * p - q + offset);
                 }
+                if(find_one) break;
             }
         }
     } else if(b == 1 or c == 1) {

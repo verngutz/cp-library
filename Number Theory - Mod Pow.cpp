@@ -1,6 +1,5 @@
 using ll = long long;
-// const ll M = 1'000'000'007;
-ll mpow(ll x, ll y, ll m = M) {
+ll mpow(ll x, ll y, ll m) {
     if(y == 0) {
         return 1;
     } else {

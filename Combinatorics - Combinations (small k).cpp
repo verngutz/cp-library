@@ -2,7 +2,7 @@
 #define __COMBINATIONS_INCLUDED_
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
+using ll = long long;
 ll C(ll n, ll k) {
     if(k < 0) return 0;
     if(k == 0 or k == n) return 1;

@@ -1,20 +1,17 @@
 #include <bits/stdc++.h>
 #include "Math - Fast Pow.cpp"
 #include "FFTs - Roots of Unity.cpp"
-#include "FFTs - Primitive Roots (NTT).cpp"
+#include "FFTs - Primitive Roots (for Number-Theoretic Transform).cpp"
 using namespace std;
-int LSB(int x) { return x & -x; }
-int log2(int x) { return 31 - __builtin_clz(x); }
+constexpr int lg(int x) { return 31 - __builtin_clz(x); }
 template <typename T> vector<T>& pad(vector<T>& a, int min_size) {
-    if(min_size != LSB(min_size)) {
-        a.resize(1 << (log2(min_size) + 1));
-    }
+    a.resize(2 << lg(min_size - 1));
     return a;
 }
 int bit_reverse(int i, int n) {
     int ans = 0;
-    for(int j = 0; j < log2(n); j++) {
-        ans |= i & (1 << j) ? 1 << (log2(n) - 1 - j) : 0;
+    for(int j = 0; j < lg(n); j++) {
+        ans |= i & (1 << j) ? 1 << (lg(n) - 1 - j) : 0;
     }
     return ans;
 }
@@ -30,7 +27,7 @@ template <typename T> vector<T>& fft(vector<T>& a, bool inverse = false) {
         for(int i = 0; i < n; i += len) {
             T root = 1;
             for(int j = i; j < i + (len >> 1); j++) {
-                auto u = a[j], t = root * a[j + (len >> 1)];
+                T u = a[j], t = root * a[j + (len >> 1)];
                 a[j] = u + t;
                 a[j + (len >> 1)] = u - t;
                 root *= W;
@@ -38,7 +35,7 @@ template <typename T> vector<T>& fft(vector<T>& a, bool inverse = false) {
         }
     }
     if(inverse) {
-        transform(a.begin(), a.end(), a.begin(), [&a](T& ai) { return ai / n; });
+        transform(a.begin(), a.end(), a.begin(), [n](T& ai) { return ai / n; });
     }
     return a;
 }
@@ -49,7 +46,8 @@ template <typename T> vector<T>& operator*=(vector<T>& a, vector<T>& b) {
     return a;
 }
 template <typename T> vector<T> operator*(vector<T>& a, vector<T>& b) {
-    return vector<T>(a) *= b;
+    vector<T> acopy = a;
+    return acopy *= b;
 }
 template <typename T> vector<T> multiply(vector<T>& a, vector<T>& b) {
     int product_size = a.size() + b.size() - 1;
@@ -61,5 +59,6 @@ template <typename T> vector<T> operator^=(vector<T>& x, long long y) {
     return fft(x, true);
 }
 template <typename T> vector<T> operator^(vector<T>& x, long long y) {
-    return vector<T>(x) *= y;
+    vector<T> xcopy = x;
+    return xcopy ^= y;
 }

@@ -1,7 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename signature> using f = const function<signature>&;
-template <typename T> void factorize(T n, f<void(T)> each_divisor, f<void(T)> each_prime = [](T) {}) {
+template <typename T, typename TEachDivisor, typename TEachPrime>
+constexpr void factorize(T n, TEachDivisor each_divisor, TEachPrime each_prime = [](T) {}) {
+    static_assert(is_convertible<decltype(each_divisor), function<void(T)>>::value, "each_divisor must be void(T)");
+    static_assert(is_convertible<decltype(each_prime), function<void(T)>>::value, "each_prime must be void(T)");
     for(T i = 2; i * i <= n; i++) {
         if(n % i == 0) {
             each_prime(i);

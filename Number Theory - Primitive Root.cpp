@@ -1,13 +1,11 @@
+#include "Number Theory - Totient.cpp"
 #include "Math - Modular Arithmetic.cpp"
-modint primitive_root(ll n) {
-    set_M(n);
-    vector<ll> prime_factors;
-    factorize<ll>(PHI_M, [](ll){}, [&](ll p) { prime_factors.push_back(p); });
-    for(modint a = 2; a <= n - 1; a++) {
+template <int N> constexpr modint<N> primitive_root() {
+    for(modint<N> a = 2; a <= N - 1; a++) {
         bool is_primitive_root = true;
-        for(auto p : prime_factors) {
-            is_primitive_root &= (a ^ (PHI_M / p)) != 1;
-        }
+        factorize<ll>(phi(N), [](ll){}, [&](ll p) {
+            is_primitive_root &= (a ^ (phi(N) / p)) != 1;
+        });
         if(is_primitive_root) {
             return a;
         }

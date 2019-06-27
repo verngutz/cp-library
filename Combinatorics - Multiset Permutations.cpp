@@ -1,11 +1,10 @@
 #include <bits/stdc++.h>
-using namespace std;
-#include "Math - Modular Arithmetic.cpp"
 #include "Combinatorics - Permutations.cpp"
-modint C(const vector<int>& occ) {
-    modint ans = f(accumulate(occ.begin(), occ.end(), 0));
+using namespace std;
+template <typename T = mint> T C(const vector<int>& occ) {
+    T ans = fact<T>(accumulate(occ.begin(), occ.end(), 0));
     for(int x : occ) {
-        ans *= f_inv(x);
+        ans *= fact_inv<T>(x);
     }
     return ans;
 }
