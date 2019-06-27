@@ -6,13 +6,11 @@ ostream& print(ostream& os, auto L, auto R) {
         if(it != L) os << ", ";
         os << *it;
     }
-    os << "]";
-    return os;
+    return os << "]";
 }
 template<typename T1, typename T2>
 ostream& operator<<(ostream& os, const pair<T1, T2>& p) {
-    os << "(" << p.first << ", " << p.second << ")";
-    return os;
+    return os << "(" << p.first << ", " << p.second << ")";
 }
 template<typename T>
 struct is_container {
