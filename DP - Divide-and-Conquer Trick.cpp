@@ -8,7 +8,7 @@ using namespace std;
 // alternatively, c must satisfy for all w <= x <= y <= z and all p:
 // quadrangle inequality: c(p, w, y) + c(p, x, z) <= c(p, w, z) + c(p, x, y)
 // runs in O(PARTS SIZE lg SIZE) assuming c is constant time
-template<typename T, size_t PARTS, size_t SIZE, bool SAVE_SPACE = true>
+template <typename T, size_t PARTS, size_t SIZE, bool SAVE_SPACE = true>
 T dnc(int parts, int n, const function<T(int, int, int)>& c,
 function<bool(T, T)> cmp = less<T>(), bool allow_empty = false, T zero = 0) {
     static T opt[SAVE_SPACE ? 2 : (PARTS + 1)][SIZE + 1];

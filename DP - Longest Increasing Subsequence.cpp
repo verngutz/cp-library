@@ -3,8 +3,7 @@
 using namespace std;
 using ll = long long;
 // NOTE: zero-indexed, returns indices of LIS, not actual sequence
-template<class T>
-vector<T> LIS(const vector<T>& a) {
+template <typename T> vector<T> LIS(const vector<T>& a) {
     T max_val = accumulate(a.begin(), a.end(), a[0], [](T x, T y) { return max(x, y); });
     vector<int> pre(a.size()), end_id(a.size() + 1);
     vector<T> end_val(a.size() + 1);

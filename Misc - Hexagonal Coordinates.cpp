@@ -29,7 +29,7 @@ vector<hex_coord> generate_ring(int r) {
 vector<hex_coord> generate_grid(int r) {
     vector<hex_coord> grid;
     for(int i = 0; i <= r; i++) {
-        auto ring = generate_ring(i);
+        vector<hex_coord> ring = generate_ring(i);
         grid.insert(grid.end(), ring.begin(), ring.end());
     }
     return grid;

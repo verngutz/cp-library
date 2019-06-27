@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include "callable.hpp/callable.hpp"
 using namespace std;
 // DP on substrings: optimum way to form binary tree from array of size N
 // cost of putting elements from index i to index j into one subtree is c(i, j)
@@ -9,8 +8,7 @@ using namespace std;
 // quadrangle inequality: c(w, y) + c(x, z) <= c(w, z) + c(x, y)
 // monotonicity: c(x, y) <= c(w, z)
 // runs in O(N^2) assuming c is constant time
-template<typename T, size_t N>
-T knuth(int n, const function<T(int, int)>& c) {
+template <typename T, size_t N> T knuth(int n, const function<T(int, int)>& c) {
     static T opt[N + 2][N + 2];
     static int arg[N + 2][N + 2];
     memset(opt, 0, sizeof opt);

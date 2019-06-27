@@ -35,7 +35,7 @@ struct trie {
         return get(c);
     }
     trie* operator[](const typename it::type& s) {
-        auto t = this;
+        trie* t = this;
         for(int i = it::start; i != it::end(s); i += it::step) {
             t = t ? t->get(it::at(s, i)) : nullptr;
         }
@@ -69,17 +69,17 @@ struct trie {
     }
     // count t ϵ T such that s = t
     int count(const typename it::type& s) {
-        auto t = (*this)[s];
+        trie* t = (*this)[s];
         return t ? t->n_ending : 0;
     }
     // count t ϵ T such that s is a prefix of t
     int n_suffixes(const typename it::type& s) {
-        auto t = (*this)[s];
+        trie* t = (*this)[s];
         return t ? t->size : 0;
     }
     // count t ϵ T such that t is a prefix of s
     int n_prefixes(const typename it::type& s) {
-        auto t = this;
+        trie* t = this;
         int ans = t->n_ending;
         for(int i = it::start; i != it::end(s); i += it::step) {
             t = t ? t->get(it::at(s, i)) : nullptr;
@@ -89,7 +89,7 @@ struct trie {
     }
     // max LCP(s, t) for all t ϵ T
     int lcp(const typename it::type& s) {
-        auto t = this;
+        trie* t = this;
         int ans = 0;
         for(int i = it::start; i != it::end(s); i += it::step) {
             t = t ? t->get(it::at(s, i)) : nullptr;
