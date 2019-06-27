@@ -41,83 +41,31 @@ cerr << "Elapsed time: " << elapsed.count() << endl;
 memset(mem, -1, sizeof mem);
 """
 }, {
-    'name': 'Read Array',
-    'prefix': 'Read Array',
-    'body': """
-int ${4:n};
-cin >> ${4:n};
-#define N ${2:100'000}
-static ${1:int} ${3:a}[N+1];
-for(int i = 1; i <= ${4:n}; i++) {
-    cin >> ${3:a}[i];
-}
-"""
-}, {
-    'name': 'Read Vector',
-    'prefix': 'Read Vector',
-    'body': """
-int ${3:n};
-cin >> ${3:n};
-vector<${1:int}> ${2:a}(${3:n} + 1);
-for(int i = 1; i <= ${3:n}; i++) {
-    cin >> ${2:a}[i];
-}
-"""
-}, {
-    'name': 'Read Grid',
-    'prefix': 'Read Grid',
-    'body': """
-int ${4:n}, ${5:m};
-cin >> ${4:n} >> ${5:m};
-#define N ${2:1000}
-static ${1:int} ${3:a}[N+1][N+1];
-memset(${3:a}, 0, sizeof ${3:a});
-for(int i = 1; i <= ${4:n}; i++) {
-    for(int j = 1; j <= ${5:m}; j++) {
-        cin >> ${3:a}[i][j];
-    }
-}
-"""
-}, {
-    'name': 'For Loop (0-indexed)',
-    'prefix': 'For Loop (0-indexed)',
-    'body': """
-for(int ${2:i} = 0; ${2:i} < ${1:n}; ${2:i}++) {
-    $3
-}
-"""
-}, {
-    'name': 'For Loop (1-indexed)',
-    'prefix': 'For Loop (1-indexed)',
-    'body': """
-for(int ${2:i} = 1; ${2:i} <= ${1:n}; ${2:i}++) {
-    $3
-}
-"""
-}, {
-    'name': 'For Loop (Double, 0-indexed)',
-    'prefix': 'For Loop (Double, 0-indexed)',
-    'body': """
-for(int ${3:i} = 0; ${3:i} < ${1:n}; ${3:i}++) {
-    for(int ${4:j} = 0; ${4:j} < ${2:m}; ${4:j}++) {
-        $5
-    }
-}
-"""
-}, {
-    'name': 'For Loop (Double, 1-indexed)',
-    'prefix': 'For Loop (Double, 1-indexed)',
-    'body': """
-for(int ${3:i} = 1; ${3:i} <= ${1:n}; ${3:i}++) {
-    for(int ${4:j} = 1; ${4:j} <= ${2:m}; ${4:j}++) {
-        $5
-    }
-}
-"""
-}, {
     'name': 'For Loop',
-    'prefix': 'for',
-    'body': ''
+    'prefix': 'For Loop',
+    'body': """
+for(int ${1:i} = ${2:0}; ${1:i} < ${3:n}; ${1:i}++) {
+    $4
+}
+"""
+}, {
+    'name': 'For Loop (Double)',
+    'prefix': 'For Loop (Double)',
+    'body': """
+for(int ${1:i} = ${2:0}; ${1:i} < ${3:n}; ${1:i}++) {
+    for(int ${4:j} = ${5:0}; ${4:j} < ${6:m}; ${4:j}++) {
+        $7
+    }
+}
+"""
+}, {
+    'name': 'Foreach Bit',
+    'prefix': 'Foreach Bit',
+    'body': """
+for(int ${1:i}${1:i} = ${2:mask}, ${1:i} = ctz(${1:i}${1:i}); ${1:i}${1:i} > 0; ${1:i}${1:i} &= ~(${1:i}${1:i} & -${1:i}${1:i}), ${1:i} = ctz(${1:i}${1:i})) {
+    $3
+}
+"""
 }, {
     'name': 'for each',
     'prefix': 'foreach',
@@ -129,13 +77,13 @@ for(int ${3:i} = 1; ${3:i} <= ${1:n}; ${3:i}++) {
 }]
 
 def make_snippet(name, prefix, body, file):
-    print("\t'{}':".format(name), file=file)
-    print("\t\t'prefix': '{}'".format(prefix), file=file)
+    print(f"\t'{name}':", file=file)
+    print(f"\t\t'prefix': '{prefix}'", file=file)
     if body:
         print("\t\t'body': \"\"\"", file=file)
         for line in body:
             if (name  == 'Template'
-                or not line.startswith(('#include', 'using namespace', 'using ll', 'from', 'import'))
+                or not line.startswith(('#include <', 'using namespace', 'using ll', 'from', 'import'))
                 or line.startswith(('#include <ext', 'using namespace __gnu'))):
                 print(line, end='', file=file)
         print('"""', file=file)
