@@ -15,11 +15,14 @@ vector<int> generate_largest_divisors(int n) {
     }
     return largest_prime_divisor;
 }
-const int N;
-vector<int> largest_prime_divisor = generate_largest_divisors(N);
-void factorize(int n, const function<void(int)>& each_divisor) {
+template <int N> void factorize(int n, const function<void(int)>& each_divisor, const function<void(int)>& each_prime = [](int) {}) {
+    static vector<int> largest_prime_divisor = generate_largest_divisors(N);
     while(n > 1) {
-        each_divisor(largest_prime_divisor[n]);
-        n /= largest_prime_divisor[n];
+        int d = largest_prime_divisor[n];
+        each_divisor(d);
+        n /= d;
+        if(d != largest_prime_divisor[n]) {
+            each_prime(d);
+        }
     }
 }

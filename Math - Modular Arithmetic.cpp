@@ -6,7 +6,7 @@ template <int M, int PHI_M = phi(M)> struct modint {
 #else
 template <int M, int PHI_M> struct modint {
 #endif
-    static const int MOD = M;
+    static constexpr int MOD = M;
     int val;
     constexpr modint() : val(0) {}
     constexpr modint(int val) : val(val % M) { val += val < 0 ? M : 0; }
@@ -43,5 +43,6 @@ template <int M, int PHI_M> struct modint {
     friend ostream& operator<<(ostream& os, const modint& m) { return os << m.val; }
     friend istream& operator>>(istream& is, modint& m) { ll val; is >> val; m = modint(val); return is; }
 };
-const int M = 1'000'000'007;
+constexpr int M = 1'000'000'007;
 using mint = modint<M, M - 1>;
+mint operator""_m(unsigned long long int x) { return mint(ll(x)); }

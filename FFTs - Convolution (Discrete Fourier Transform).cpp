@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
-#include "Math - Fast Pow.cpp"
-#include "FFTs - Roots of Unity.cpp"
-#include "FFTs - Primitive Roots (for Number-Theoretic Transform).cpp"
+#include "Misc - Lg.cpp"
+#include "FFTs - Roots of Unity (Complex).cpp"
+#include "FFTs - Roots of Unity (Number-Theoretic).cpp"
 using namespace std;
-constexpr int lg(int x) { return 31 - __builtin_clz(x); }
 template <typename T> vector<T>& pad(vector<T>& a, int min_size) {
     a.resize(2 << lg(min_size - 1));
     return a;
@@ -23,7 +22,7 @@ template <typename T> vector<T>& fft(vector<T>& a, bool inverse = false) {
         }
     }
     for(int len = 2; len <= n; len <<= 1) {
-        T W = w(len, inverse);
+        T W = w<T>(len, inverse);
         for(int i = 0; i < n; i += len) {
             T root = 1;
             for(int j = i; j < i + (len >> 1); j++) {
@@ -35,30 +34,15 @@ template <typename T> vector<T>& fft(vector<T>& a, bool inverse = false) {
         }
     }
     if(inverse) {
-        transform(a.begin(), a.end(), a.begin(), [n](T& ai) { return ai / n; });
+        transform(a.begin(), a.end(), a.begin(), [n](T& ai) { return ai / T(n); });
     }
     return a;
 }
 template <typename T> vector<T>& operator*=(vector<T>& a, vector<T>& b) {
     fft(pad(a, a.size())); if(addressof(a) != addressof(b)) fft(pad(b, b.size()));
+    assert(a.size() == b.size());
     transform(a.begin(), a.end(), b.begin(), a.begin(), multiplies<T>());
     fft(a, true); if(addressof(a) != addressof(b)) fft(b, true);
     return a;
 }
-template <typename T> vector<T> operator*(vector<T>& a, vector<T>& b) {
-    vector<T> acopy = a;
-    return acopy *= b;
-}
-template <typename T> vector<T> multiply(vector<T>& a, vector<T>& b) {
-    int product_size = a.size() + b.size() - 1;
-    return pad(a, product_size) * pad(b, product_size);
-}
-template <typename T> vector<T> operator^=(vector<T>& x, long long y) {
-    fft(pad(x, (x.size() - 1) * y + 1));
-    transform(x.begin(), x.end(), x.begin(), [y](T& xi) { return fpow(xi, y); });
-    return fft(x, true);
-}
-template <typename T> vector<T> operator^(vector<T>& x, long long y) {
-    vector<T> xcopy = x;
-    return xcopy ^= y;
-}
+template <typename T> vector<T> operator*(vector<T> a, vector<T>& b) { return a *= b; }

@@ -14,7 +14,7 @@ vector<T> fwht(const vector<T>& a) {
         return ans;
     }
 }
-template <typename T> vector<T> xor_convolution(const vector<T>& A, const vector<T>& B) {
+template <typename T> vector<T> operator^(const vector<T>& A, const vector<T>& B) {
     int n = A.size();
     vector<T> a = fwht(A), b = fwht(B), c(n);
     for(int i = 0; i < n; i++) {

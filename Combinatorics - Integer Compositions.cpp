@@ -1,12 +1,6 @@
 #include "Combinatorics - Combinations.cpp"
-template <typename T = mint> T C_positive(int n, int k) {
-    return n == 0 ? 1 : C<T>(n - 1, k - 1);
-}
-template <typename T = mint> T C_positive(int n) {
-    return n == 0 ? 1 : T(2) ^ (n - 1);
-}
 template <typename T = mint> T C_nonnegative(int n, int k) {
-    return C<T>(n + k - 1, k - 1);
+    return k == 0 ? n == 0 : C<T>(n + k - 1, k - 1);
 }
 template <typename T = mint> T C_nonnegative(int n, int k, int ub) {
     T ans = C_nonnegative<T>(n, k);
@@ -16,4 +10,10 @@ template <typename T = mint> T C_nonnegative(int n, int k, int ub) {
         sgn *= -1;
     }
     return ans;
+}
+template <typename T = mint> T C_positive(int n, int k) {
+    return C_nonnegative(n - k, k);
+}
+template <typename T = mint> T C_positive(int n) {
+    return n == 0 ? 1 : T(2) ^ (n - 1);
 }
