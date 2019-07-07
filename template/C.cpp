@@ -5,6 +5,7 @@
 #endif
 using namespace std;
 using ll = long long;
+using ld = long double;
 template <typename T> using lim = numeric_limits<T>;
 template <typename T> istream& operator>>(istream& is, vector<T>& a) { for(T& x : a) { is >> x; } return is; }
 int main() {
