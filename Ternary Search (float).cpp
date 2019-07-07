@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename TOut> double tsearch(double L, double R, const function<TOut(double)>& f, bool concave_up = true) {
+template <typename signature> using f = const function<signature>&;
+template <typename TIn, typename TOut> TIn tsearch(TIn L, TIn R, f<TOut(TIn)> obj, f<bool(TOut, TOut)> cmp = less<TOut>()) {
     for(int i = 0; i < 1000; i++) {
-        double M1 = (2 * L + R) / 3;
-        double M2 = (L + 2 * R) / 3;
-        (concave_up ? f(M1) < f(M2) : f(M1) > f(M2)) ? R = M2 : L = M1;
+        TIn M1 = (2 * L + R) / 3;
+        TIn M2 = (L + 2 * R) / 3;
+        cmp(obj(M1), obj(M2)) ? R = M2 : L = M1;
     }
-    return (concave_up ? f(L) < f(R) : f(L) > f(R)) ? L : R;
+    return cmp(obj(L), obj(R)) ? L : R;
 }
