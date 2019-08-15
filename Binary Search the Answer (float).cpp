@@ -1,10 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-double bsearch(double L, double R, const function<bool(double)>& can, bool left_feasible = true) {
-    double& feasible = left_feasible ? L : R;
-    double& infeasible = left_feasible ? R : L;
+template <typename T, typename Can> T bsearch(T L, T R, Can&& can, bool left_feasible = true) {
+    static_assert(is_convertible<decltype(can), function<bool(T)>>::value, "can must be bool(T)");
+    T& feasible = left_feasible ? L : R;
+    T& infeasible = left_feasible ? R : L;
     for(int i = 0; i < 100; i++) {
-        double M = L + (R - L) / 2;
+        T M = L + (R - L) / 2;
         (can(M) ? feasible : infeasible) = M;
     }
     return feasible;
