@@ -5,9 +5,10 @@ struct fraction {
     long long n, d;
     fraction(long long n=0, long long d=1) : n(n), d(d) { reduce(); }
     void reduce() {
-        int s = sgn(n / d);
+        int s = sgn(n) / sgn(d);
         n = abs(n), d = abs(d);
-        n = s * n / gcd(n, d), d = d / gcd(n, d);
+        int g = gcd(n, d);
+        n = s * n / g, d = d / g;
     }
     bool operator==(const fraction& f) const { return n == f.n and d == f.d; }
     bool operator!=(const fraction& f) const { return not (*this == f); }

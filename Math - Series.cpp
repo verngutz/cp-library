@@ -1,19 +1,19 @@
 #include <bits/stdc++.h>
 #include "Math - Modular Arithmetic.cpp"
 // Σ i for i in [0, n)
-ll arith0(ll n) {
+template <typename T = ll> T arith0(T n) {
     return n * (n - 1) / 2;
 }
 // Σ i for i in [1, n]
-ll arith1(ll n) {
+template <typename T = ll> T arith1(T n) {
     return n * (n + 1) / 2;
 }
 // Σ a0 + r*i for i in [0, n)
-ll arith0(ll a0, ll r, ll n) {
+template <typename T = ll> T arith0(T a0, T r, T n) {
     return a0 * n + r * arith0(n);
 }
 // Σ a0 + r*i for i in [1, n]
-ll arith1(ll a0, ll r, ll n) {
+template <typename T = ll> T arith1(T a0, T r, T n) {
     return a0 * n + r * arith1(n);
 }
 // Σ r^i for i in [0, ∞), r < 1
