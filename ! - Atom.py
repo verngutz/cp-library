@@ -44,17 +44,17 @@ memset(mem, -1, sizeof mem);
     'name': 'For Loop',
     'prefix': 'For Loop',
     'body': """
-for(int ${1:i} = ${2:0}; ${1:i} < ${3:n}; ${1:i}++) {
-    $4
+for(int ${1:i} = ${2:0}; ${1:i} <$3 ${4:n}; ${1:i}++) {
+    $5
 }
 """
 }, {
     'name': 'For Loop (Double)',
     'prefix': 'For Loop (Double)',
     'body': """
-for(int ${1:i} = ${2:0}; ${1:i} < ${3:n}; ${1:i}++) {
-    for(int ${4:j} = ${5:0}; ${4:j} < ${6:m}; ${4:j}++) {
-        $7
+for(int ${1:i} = ${2:0}; ${1:i} <$3 ${4:n}; ${1:i}++) {
+    for(int ${5:j} = ${6:0}; ${5:j} <$7 ${8:m}; ${5:j}++) {
+        $9
     }
 }
 """
@@ -83,7 +83,7 @@ def make_snippet(name, prefix, body, file):
         print("\t\t'body': \"\"\"", file=file)
         for line in body:
             if (name  == 'Template'
-                or not line.startswith(('#include <', 'using namespace', 'using ll', 'from', 'import'))
+                or not line.startswith(('#include <', 'using namespace', 'using ll', 'template <typename T> using lim', 'from', 'import'))
                 or line.startswith(('#include <ext', 'using namespace __gnu'))):
                 print(line, end='', file=file)
         print('"""', file=file)
