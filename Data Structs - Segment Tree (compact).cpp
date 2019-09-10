@@ -3,33 +3,32 @@ using namespace std;
 template <typename T> struct segtree {
     using Type = T;
     using DeltaType = T;
-    const T zero;
-    const function<T(T, T)> combine;
     const int size;
     vector<T> tree;
-    segtree(T zero, const function<T(T, T)>& combine, int size)
-    : zero(zero), combine(combine), size(size), tree(2 * (size + 1), zero) {}
-    void update(int i, T x) { // arr[i] = x
+    const T zero;
+    const function<T(T, T)> combine;
+    segtree(int size, T zero, const function<T(T, T)>& combine)
+    : size(size), tree(2 * (size + 1), zero), zero(zero), combine(combine) {}
+    void update(int i, T x) {
         for(tree[i += size] = x; i >>= 1; )
             tree[i] = combine(tree[i << 1], tree[(i << 1) | 1]);
     }
-    T query(int a, int b) { // sum[a, b]
+    T query(int a, int b, bool inclusive) {
+        assert(a <= b);
         T ans_l = zero, ans_r = zero;
-        for(a += size, b += size + 1; a < b; a >>= 1, b >>= 1) {
+        for(a += size, b += size + inclusive; a < b; a >>= 1, b >>= 1) {
             if(a & 1) ans_l = combine(ans_l, tree[a++]);
             if(b & 1) ans_r = combine(tree[--b], ans_r);
         }
         return combine(ans_l, ans_r);
     }
-    T query(int i) { return query(i, i); }
-};
-template<typename T> ostream& operator<<(ostream& os, segtree<T>& t) {
-    os << "[";
-    bool comma = false;
-    for(int i = 0; i <= t.size; i++) {
-        if(comma) os << ", "; else comma = true;
-        os << t.query(i);
+    T query(int i) { return query(i, i, true); }
+    friend ostream& operator<<(ostream& os, segtree& t) {
+        os << "[";
+        for(int i = 0; i <= t.size; i++) {
+            if(i != 0) os << ", ";
+            os << t.query(i);
+        }
+        return os << "]";
     }
-    os << "]";
-    return os;
-}
+};
