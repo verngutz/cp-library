@@ -1,5 +1,7 @@
 #include <bits/stdc++.h>
+#ifndef __FASTPOW_INCLUDED_
 #include "Math - Fast Pow.cpp"
+#endif
 using namespace std;
 #ifdef __TOTIENT_INCLUDED_
 template <int M, int PHI_M = phi(M)> struct modint {
@@ -9,8 +11,8 @@ template <int M, int PHI_M> struct modint {
     static constexpr int MOD = M;
     int val;
     constexpr modint() : val(0) {}
-    constexpr modint(int val) : val(val % M) { val += val < 0 ? M : 0; }
-    constexpr modint(long long val) : modint(int(val % M)) {}
+    constexpr modint(int x) : val(x % M) { val += val < 0 ? M : 0; }
+    constexpr modint(long long x) : modint(int(x % M)) {}
     constexpr modint(const modint& m) : val(m.val) {}
     constexpr explicit operator int() const { return val; }
     constexpr bool operator==(const modint& y) const { return val == y.val; }
