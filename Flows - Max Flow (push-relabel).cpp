@@ -1,64 +1,46 @@
 #include <bits/stdc++.h>
+#include "Flows - Max Flow Structure.cpp"
 using namespace std;
-using ll = long long;
-struct edge { int u, v; ll c, f; };
-struct graph {
-    int n;
-    vector<edge> edges;
-    vector<vector<int>> adj;
-    graph(int n) : n(n), adj(n + 1) {}
-    void add_edge(int u, int v, ll c) {
-        if(u != v) {
-            adj[u].push_back(edges.size()); edges.push_back({u, v, c, 0});
-            adj[v].push_back(edges.size()); edges.push_back({v, u, 0, 0});
-        }
-    }
-};
-ll max_flow(graph& g, int s, int t) {
-    vector<int> height(g.n + 1), counter(2 * g.n);
-    vector<ll> excess(g.n + 1);
-    vector<bool> active(g.n + 1);
+template <typename T, bool Index> T max_flow(flow_graph<T, Index>& g, int s, int t) {
+    vector<int> height(g.adj.size()), counter(2 * g.size());
+    vector<T> excess(g.adj.size());
+    vector<bool> active(g.adj.size());
     queue<int> q;
-    height[s] = g.n;
-    auto push = [&](int u, int i, int df) {
-        edge& forward = g.edges[i];
-        edge& reverse = g.edges[i ^ 1];
-        auto [uu, v, c, f] = forward;
-        forward.f += df, reverse.f -= df;
-        excess[v] += df, excess[u] -= df;
-        if(excess[v] and not active[v] and v != s and v != t) {
-            q.push(v), active[v] = true;
+    auto push = [&](int u, int e, int df) {
+        g(e).f += df, excess[g(e).v] += df;
+        g(e ^ 1).f -= df, excess[u] -= df;
+        if(excess[g(e).v] and not active[g(e).v] and g(e).v != s and g(e).v != t) {
+            q.push(g(e).v), active[g(e).v] = true;
         }
     };
-    for(int i : g.adj[s]) {
-        push(s, i, g.edges[i].c);
-    }
     auto discharge = [&](int u) {
-        for(int j = 0; j < g.adj[u].size() and excess[u]; j++) {
-            auto [uu, v, c, f] = g.edges[g.adj[u][j]];
-            if(height[u] > height[v] and c - f > 0) {
-                push(u, g.adj[u][j], min(excess[u], c - f));
+        for(int j = 0; j < g[u].size() and excess[u]; j++) {
+            if(height[u] > height[g(g[u][j]).v] and g(g[u][j]).resid() > 0) {
+                push(u, g[u][j], min(excess[u], g(g[u][j]).resid()));
             }
         }
     };
     auto relabel = [&](int u) {
         if(counter[height[u]] == 1) {
-            for(int i = 1; i <= g.n; i++) {
-                if(i != s and height[i] >= height[u]) {
-                    counter[height[i]]--;
-                    counter[height[i] = max(height[i], g.n + 1)]++;
+            for(int v = Index; v < g.adj.size(); v++) {
+                if(v != s and height[v] >= height[u]) {
+                    counter[height[v]]--;
+                    counter[height[v] = max(height[v], g.adj.size())]++;
                 }
             }
         } else {
             counter[height[u]]--;
-            height[u] = 2 * g.n - 1;
-            for(int i : g.adj[u]) {
-                auto [uu, v, c, f] = g.edges[i];
-                if(c - f > 0) height[u] = min(height[u], height[v] + 1);
+            height[u] = 2 * g.size() - 1;
+            for(int e : g[u]) if(g(e).resid() > 0) {
+                height[u] = min(height[u], height[g(e).v] + 1);
             }
             counter[height[u]]++;
         }
     };
+    height[s] = g.size();
+    for(int e : g[s]) {
+        push(s, e, g(e).c);
+    }
     while(not q.empty()) {
         int u = q.front(); q.pop(), active[u] = false;
         discharge(u);

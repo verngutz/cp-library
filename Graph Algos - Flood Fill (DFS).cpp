@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include "Data Structs - Grid.cpp"
 using namespace std;
 template <typename signature> using f = const function<signature>;
 f<bool(int, int)> hori = [](int di, int dj) { return abs(di) == 0 and abs(dj) == 1; };
@@ -7,31 +8,29 @@ f<bool(int, int)> diag = [](int di, int dj) { return abs(di) == 1 and abs(dj) ==
 f<bool(int, int)> operator||(f<bool(int, int)>& f1, f<bool(int, int)>& f2) {
     return [&](int di, int dj) { return f1(di, dj) or f2(di, dj); };
 }
-int flood(vector<vector<int>>& a, f<bool(int, int)>& can,
-f<void(int, int, int, int)>& f = [](int, int, int, int) {}) {
-    int n = a.size() - 2, m = a[0].size() - 2;
-    vector<vector<int>> component(n + 2, vector<int>(m + 2));
+template <typename Can> grid<int> flood(grid<int>& a, Can&& can) {
+    static_assert(is_convertible<decltype(can), function<bool(int, int)>>::value, "can must be bool(int, int)");
+    grid<int> component(a.n, a.m);
     int component_id = 0;
-    function<void(int, int, int, int)> dfs = [&](int i, int j, int from_i, int from_j) {
-        if(a[i][j] and not component[i][j]) {
-            f(i, j, from_i, from_j);
+    function<void(int, int)> dfs = [&](int i, int j) {
+        if(0 <= i and i < a.n and 0 <= j and j < a.m and a[i][j] and not component[i][j]) {
             component[i][j] = component_id;
             for(int di = -1; di <= 1; di++) {
                 for(int dj = -1; dj <= 1; dj++) {
                     if(can(di, dj)) {
-                        dfs(i + di, j + dj, i, j);
+                        dfs(i + di, j + dj);
                     }
                 }
             }
         }
     };
-    for(int i = 1; i <= n; i++) {
-        for(int j = 1; j <= m; j++) {
+    for(int i = 0; i < a.n; i++) {
+        for(int j = 0; j < a.m; j++) {
             if(a[i][j] and not component[i][j]) {
                 component_id++;
-                dfs(i, j, 0, 0);
+                dfs(i, j);
             }
         }
     }
-    return component_id;
+    return component;
 }
