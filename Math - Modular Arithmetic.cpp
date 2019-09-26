@@ -13,7 +13,6 @@ template <int M, int PHI_M> struct modint {
     constexpr modint() : val(0) {}
     constexpr modint(int x) : val(x % M) { val += val < 0 ? M : 0; }
     constexpr modint(long long x) : modint(int(x % M)) {}
-    constexpr modint(const modint& m) : val(m.val) {}
     constexpr explicit operator int() const { return val; }
     constexpr bool operator==(const modint& y) const { return val == y.val; }
     constexpr bool operator!=(const modint& y) const { return val != y.val; }
@@ -27,11 +26,11 @@ template <int M, int PHI_M> struct modint {
     constexpr modint& operator*=(const modint& y) { val = ll(val) * y.val % M; return *this; }
     constexpr modint& operator/=(const modint& y) { val = ll(val) * fpow(y, PHI_M - 1).val % M; return *this; }
     constexpr modint& operator^=(ll y) { fpow_eq(*this, y); return *this; }
-    constexpr modint operator+(const modint& y) const { return modint(val) += y; }
-    constexpr modint operator-(const modint& y) const { return modint(val) -= y; }
-    constexpr modint operator*(const modint& y) const { return modint(val) *= y; }
-    constexpr modint operator/(const modint& y) const { return modint(val) /= y; }
-    constexpr modint operator^(ll y) const { return modint(val) ^= y; }
+    constexpr modint operator+(const modint& y) const { return modint(*this) += y; }
+    constexpr modint operator-(const modint& y) const { return modint(*this) -= y; }
+    constexpr modint operator*(const modint& y) const { return modint(*this) *= y; }
+    constexpr modint operator/(const modint& y) const { return modint(*this) /= y; }
+    constexpr modint operator^(ll y) const { return modint(*this) ^= y; }
     constexpr modint operator-() const { return modint(0) -= *this; }
     constexpr modint operator~() const { return modint(1) /= *this; }
     constexpr modint& operator++() { val = val == M - 1 ? 0 : val + 1; return *this; }
