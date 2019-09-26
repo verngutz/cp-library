@@ -15,6 +15,15 @@ struct trie {
             t = nullptr;
         }
     }
+    trie(trie&& t) { *this = move(t); }
+    trie& operator=(trie&& t) {
+        size = t.size, n_ending = t.n_ending, height = t.height;
+        for(int i = 0; i < alpha_size; i++) {
+            children[i] = t.children[i];
+            t.children[i] = nullptr;
+        }
+        return *this;
+    }
     void clear() {
         for(trie*& t : children) {
             delete t;
@@ -58,8 +67,8 @@ struct trie {
     trie* erase(const typename it::type& s, int i = it::start) {
         size--;
         if(i != it::end(s)) {
-            get(it::at(s, i))->erase(s, i + it::step)->empty() ? remove(it::at(s, i)) : void();
-            height = accumulate(children.begin(), children.end(), 0, [](int h, trie* t) {
+            get(it::at(s, i)) and get(it::at(s, i))->erase(s, i + it::step)->empty() ? remove(it::at(s, i)) : void();
+            height = accumulate(children, children + alpha_size, 0, [](int h, trie* t) {
                 return t ? max(h, t->height + 1) : h;
             });
         } else {
