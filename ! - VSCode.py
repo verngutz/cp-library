@@ -1,4 +1,10 @@
 import os
+import platform
+
+path = {
+    'Windows': 'C://Users//Vernon//AppData//Roaming//Code//User//snippets//{language}.json',
+    'Linux': '/home/atpms/.config/Code/User/snippets/{language}.json'
+}
 
 valid = {
     'cpp': lambda f: os.path.isfile(f) and f.endswith('.cpp') and f[0] not in ('[', '_', '!'),
@@ -64,7 +70,7 @@ def make_snippet(name, prefix, body, file):
     print('\t},', file=file)
 
 for language in ['cpp', 'python']:
-    with open(f'C://Users//Vernon//AppData//Roaming//Code//User//snippets//{language}.json', encoding='utf-8', mode='w') as f:
+    with open(path[platform.system()].format(language=language), encoding='utf-8', mode='w') as f:
         print('{', file=f)
         for file_name in [f for f in os.listdir('.') if valid[language](f)]:
             with open(file_name, encoding='utf-8', mode='r') as source:
