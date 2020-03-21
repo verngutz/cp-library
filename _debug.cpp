@@ -6,13 +6,11 @@ ostream& print(ostream& os, auto L, auto R) {
         if(it != L) os << ", ";
         os << *it;
     }
-    os << "]";
-    return os;
+    return os << "]";
 }
 template<typename T1, typename T2>
 ostream& operator<<(ostream& os, const pair<T1, T2>& p) {
-    os << "(" << p.first << ", " << p.second << ")";
-    return os;
+    return os << "(" << p.first << ", " << p.second << ")";
 }
 template<typename T>
 struct is_container {
@@ -54,12 +52,12 @@ vector<string> split(const string& s, char c) {
     }
     return v;
 }
-#define err(args...) { error(split(#args, ',').begin(), args); }
+#define err(args...) { error(split(#args, ' ').begin(), args); }
 void error(vector<string>::iterator it) {
-    cerr << endl;
+    cerr << "\033[0m" << endl;
 }
 template<typename T, typename... Args>
 void error(vector<string>::iterator it, T a, Args... args) {
-	cerr << it->substr((*it)[0] == ' ') << " = " << a << "; ";
+	cerr << "\033[0;32;1m" << it->substr((*it)[0] == ' ', it->back() == ',' ? it->size() - 1 : it->size()) << " = " << a << "; ";
 	error(++it, args...);
 }
