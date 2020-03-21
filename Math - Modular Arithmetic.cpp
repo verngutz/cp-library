@@ -16,10 +16,6 @@ template <int M, int PHI_M> struct modint {
     constexpr explicit operator int() const { return val; }
     constexpr bool operator==(const modint& y) const { return val == y.val; }
     constexpr bool operator!=(const modint& y) const { return val != y.val; }
-    constexpr bool operator< (const modint& y) const { return val <  y.val; }
-    constexpr bool operator<=(const modint& y) const { return val <= y.val; }
-    constexpr bool operator> (const modint& y) const { return val >  y.val; }
-    constexpr bool operator>=(const modint& y) const { return val >= y.val; }
     constexpr modint& operator=(const modint& y) { val = y.val; return *this; }
     constexpr modint& operator+=(const modint& y) { val += y.val; val -= val >= M ? M : 0; return *this; }
     constexpr modint& operator-=(const modint& y) { val -= y.val; val += val <  0 ? M : 0; return *this; }

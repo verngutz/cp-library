@@ -5,12 +5,42 @@ using szt = size_t; // required for operator overload template argument deductio
 template <typename T, szt N, szt M> using mat = array<array<T, M>, N>;
 template <typename T, szt N> using sqmat = mat<T, N, N>;
 template <typename T, szt N> sqmat<T, N> I() {
-    sqmat<T, N> I = {};
+    sqmat<T, N> I = {}; // required to initialize to 0
     for(szt i = 0; i < N; i++) {
         I[i][i] = 1;
     }
     return I;
 }
+template <typename T, szt P, szt Q> mat<T, P, Q>& operator+=(mat<T, P, Q>& A, const mat<T, P, Q>& B) {
+    for(szt i = 0; i < P; i++) {
+        for(szt j = 0; j < Q; j++) {
+            A[i][j] += B[i][j];
+        }
+    }
+    return A;
+}
+template <typename T, szt P, szt Q> mat<T, P, Q> operator+(mat<T, P, Q> A, const mat<T, P, Q>& B) { return A += B; }
+template <typename T, szt P, szt Q> mat<T, P, Q>& operator-=(mat<T, P, Q>& A, const mat<T, P, Q>& B) {
+    for(szt i = 0; i < P; i++) {
+        for(szt j = 0; j < Q; j++) {
+            A[i][j] -= B[i][j];
+        }
+    }
+    return A;
+}
+template <typename T, szt P, szt Q> mat<T, P, Q> operator-(mat<T, P, Q> A, const mat<T, P, Q>& B) { return A -= B; }
+template <typename T, szt P, szt Q> mat<T, P, Q>& operator*=(mat<T, P, Q>& A, const T& c) {
+    for(szt i = 0; i < P; i++) {
+        for(szt j = 0; j < Q; j++) {
+            A[i][j] *= c;
+        }
+    }
+    return A;
+}
+template <typename T, szt P, szt Q> mat<T, P, Q> operator*(mat<T, P, Q> A, const T& c) { return A *= c; }
+template <typename T, szt P, szt Q> mat<T, P, Q>& operator*=(const T& c, mat<T, P, Q>& A) { return A *= c; }
+template <typename T, szt P, szt Q> mat<T, P, Q> operator*(const T& c, mat<T, P, Q> A) { return A *= c; }
+template <typename T, szt P, szt Q> mat<T, P, Q> operator-(mat<T, P, Q> A) { return A *= -1; }
 template <typename T, szt P, szt Q, szt R> mat<T, P, R> operator*(const mat<T, P, Q>& A, const mat<T, Q, R>& B) {
     mat<T, P, R> C = {};
     for(szt i = 0; i < P; i++) {

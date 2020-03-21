@@ -39,10 +39,11 @@ template <typename T> vector<T>& fft(vector<T>& a, bool inverse = false) {
     return a;
 }
 template <typename T> vector<T>& operator*=(vector<T>& a, vector<T>& b) {
-    fft(pad(a, a.size())); if(addressof(a) != addressof(b)) fft(pad(b, b.size()));
+    fft(pad(a, a.size()));
+    if(addressof(a) != addressof(b)) fft(pad(b, b.size()));
     assert(a.size() == b.size());
     transform(a.begin(), a.end(), b.begin(), a.begin(), multiplies<T>());
-    fft(a, true); if(addressof(a) != addressof(b)) fft(b, true);
-    return a;
+    if(addressof(a) != addressof(b)) fft(b, true);
+    return fft(a, true);
 }
 template <typename T> vector<T> operator*(vector<T> a, vector<T>& b) { return a *= b; }
