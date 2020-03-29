@@ -11,8 +11,9 @@ struct cht {
         ll m, b, intersection;
         ll eval(ll x) const { return m * x + b; }
         ll cross(const line& l) const { return (l.b - b) / (m - l.m); }
-        bool operator<(const line& l) const { return m < l.m; }
+        bool operator<(const line& l) const { return m > l.m; }
         bool operator<(const ll x) const { return intersection < x; }
+        friend bool operator<(const ll x, const line& l) { return x < l.intersection; }
     };
     multiset<line, less<>> h;
     const function<bool(ll, ll)> cmp;
@@ -31,6 +32,7 @@ struct cht {
     }
     ll opt(ll x) {
         assert(!h.empty());
-        return lt(h, x)->eval(x);
+        ll y1 = lt(h, x)->eval(x), y2 = le(h, x)->eval(x);
+        return cmp(y1, y2) ? y1 : y2;
     }
 };
