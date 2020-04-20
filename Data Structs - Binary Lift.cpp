@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include "Misc - Lg.cpp"
 #include "Graph Algos - DFS.cpp"
 using namespace std;
 template <typename TEdge> struct binary_lift {
@@ -22,17 +21,17 @@ template <typename TEdge> struct binary_lift {
         }
     }
     void build_ancestors(int u) {
-        for(int pow2 = 1; pow2 <= lg(depth[u]); pow2++) {
+        for(int pow2 = 1; pow2 <= __lg(depth[u]); pow2++) {
             p[u].push_back(p[p[u][pow2 - 1]][pow2 - 1]);
         }
     }
     int kth_ancestor(int u, int k) {
-        return k == 0 ? u : kth_ancestor(p[u][lg(k & -k)], k - (k & -k));
+        return k == 0 ? u : kth_ancestor(p[u][__lg(k & -k)], k - (k & -k));
     }
     int lca(int u, int v) {
         if(depth[u] > depth[v]) swap(u, v);
         v = kth_ancestor(v, depth[v] - depth[u]);
-        for(int pow2 = lg(depth[u]); pow2 >= 0; pow2--) {
+        for(int pow2 = __lg(depth[u]); pow2 >= 0; pow2--) {
             if((1 << pow2) <= depth[u] and p[u][pow2] != p[v][pow2]) {
                 u = p[u][pow2], v = p[v][pow2];
             }

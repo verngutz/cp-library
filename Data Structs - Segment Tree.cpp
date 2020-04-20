@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
 #include "Data Structs - Monoid.cpp"
-#include "Misc - Lg.cpp"
 using namespace std;
 template <typename T, typename D> struct segtree {
-    static constexpr int st_size(int size) { return (4 << lg(size - 1)) - 1; }
+    static constexpr int st_size(int size) { return (4 << __lg(size - 1)) - 1; }
     using Type = T;
     using DeltaType = D;
     const int size;

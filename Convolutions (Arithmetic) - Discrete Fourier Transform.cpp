@@ -1,16 +1,15 @@
 #include <bits/stdc++.h>
-#include "Misc - Lg.cpp"
 #include "FFTs - Roots of Unity (Complex).cpp"
 #include "FFTs - Roots of Unity (Number-Theoretic).cpp"
 using namespace std;
 template <typename T> vector<T>& pad(vector<T>& a, int min_size) {
-    a.resize(2 << lg(min_size - 1));
+    a.resize(2 << __lg(min_size - 1));
     return a;
 }
 int bit_reverse(int i, int n) {
     int ans = 0;
-    for(int j = 0; j < lg(n); j++) {
-        ans |= i & (1 << j) ? 1 << (lg(n) - 1 - j) : 0;
+    for(int j = 0; j < __lg(n); j++) {
+        ans |= i & (1 << j) ? 1 << (__lg(n) - 1 - j) : 0;
     }
     return ans;
 }
