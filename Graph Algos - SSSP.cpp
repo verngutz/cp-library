@@ -4,10 +4,13 @@
 using namespace std;
 template <typename T> using lim = numeric_limits<T>;
 template <bool Directed, typename T, bool Index>
-pair<vector<T>, vector<int>> sssp(graph<Directed, wedge<T>, Index>& g, int s) {
+pair<vector<T>, vector<int>> sssp(graph<Directed, wedge<T>, Index>& g, const vector<int>& s) {
     vector<int> vis(g.adj.size()), p(g.adj.size(), -1);
     vector<T> d(g.adj.size(), lim<T>::max());
-    priority_queue<pair<T, int>> pq({}, {{d[s] = 0, s}});
+    priority_queue<pair<T, int>> pq;
+    for(int u : s) {
+        pq.push({d[u] = 0, u});
+    }
     while(not pq.empty()) {
         int u = pq.top().second; pq.pop();
         if(not vis[u]) {
