@@ -6,7 +6,7 @@ template <typename T> struct fedge {
     T resid() { return c - f; }
     fedge reverse() const { return {v, u, 0, 0}; }
     friend ostream& operator<<(ostream& os, const fedge& e) {
-        return os << "(" << e.u << ", " << e.v << ", " << e.w << ", " << e.c << ", " << e.f << ")";
+        return os << "{u: " << e.u << ", v: " << e.v << ", c: " << e.c << ", f: " << e.f << "}";
     }
 };
 template <typename T, bool Index> using flow_graph = graph<0, fedge<T>, Index>;
