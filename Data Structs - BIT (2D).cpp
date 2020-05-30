@@ -4,7 +4,7 @@ using namespace std;
 template <typename T = long long> struct bit2D {
     const int n, m;
     vector<vector<T>> t;
-    bit2D(int n, int m) : n(n), m(m), t(n, vector<T>(m)) {}
+    bit2D(int n, int m) : n(n), m(m), t(n + 1, vector<T>(m + 1)) {}
     void add(int r, int c, T value) {
        for(int i = r; i <= n; i += i & -i) {
             for(int j = c; j <= m; j += j & -j) {
