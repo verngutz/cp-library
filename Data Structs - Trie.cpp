@@ -2,11 +2,13 @@
 using namespace std;
 struct string_iterator {
     using type = string;
-    static constexpr int start = 0, step = 1;
-    static inline int end(string s) { return s.size(); }
-    static inline char at(string s, int i) { return s[i]; }
+    int i = 0;
+    bool operator<(const string& s) const { return i < s.size(); }
+    string_iterator& operator++() { i++; return *this; }
+    char operator()(const string& s) { return s[i]; }
+    friend int operator-(const string& s, const string_iterator& it) { return s.size() - it.i; }
 };
-template <int alpha_size, char alpha_start, typename it = string_iterator>
+template <int alpha_size, char alpha_start, typename iterator = string_iterator>
 struct trie {
     int size, n_ending, height;
     trie* children[alpha_size];
@@ -43,10 +45,10 @@ struct trie {
     trie*& operator[](char c) {
         return get(c);
     }
-    trie* operator[](const typename it::type& s) {
+    trie* operator[](const typename iterator::type& s) {
         trie* t = this;
-        for(int i = it::start; i != it::end(s); i += it::step) {
-            t = t ? t->get(it::at(s, i)) : nullptr;
+        for(iterator i; i < s; ++i) {
+            t = t ? (*t)[i(s)] : nullptr;
         }
         return t;
     }
@@ -54,20 +56,20 @@ struct trie {
         delete children[c];
         children[c] = nullptr;
     }
-    trie* insert(const typename it::type& s, int i = it::start) {
-        size++;
-        if(i != it::end(s)) {
-            (get(it::at(s, i)) ? get(it::at(s, i)) : get(it::at(s, i)) = new trie())->insert(s, i + it::step);
-            height = max(height, get(it::at(s, i))->height + 1);
-        } else {
-            n_ending++;
+    trie* insert(const typename iterator::type& s) {
+        trie* t = this;
+        for(iterator i; i < s; ++i) {
+            t->size++;
+            t->height = max(height, s - i);
+            t = (*t)[i(s)] ?: ((*t)[i(s)] = new trie());
         }
+        t->n_ending++;
         return this;
     }
-    trie* erase(const typename it::type& s, int i = it::start) {
+    trie* erase(const typename iterator::type& s, const iterator& i = {}) {
         size--;
-        if(i != it::end(s)) {
-            get(it::at(s, i)) and get(it::at(s, i))->erase(s, i + it::step)->empty() ? remove(it::at(s, i)) : void();
+        if(i < s) {
+            get(i(s)) and get(i(s))->erase(s, ++iterator(i))->empty() ? remove(i(s)) : void();
             height = accumulate(children, children + alpha_size, 0, [](int h, trie* t) {
                 return t ? max(h, t->height + 1) : h;
             });
@@ -77,31 +79,31 @@ struct trie {
         return this;
     }
     // count t ϵ T such that s = t
-    int count(const typename it::type& s) {
+    int count(const typename iterator::type& s) {
         trie* t = (*this)[s];
         return t ? t->n_ending : 0;
     }
     // count t ϵ T such that s is a prefix of t
-    int n_suffixes(const typename it::type& s) {
+    int n_suffixes(const typename iterator::type& s) {
         trie* t = (*this)[s];
         return t ? t->size : 0;
     }
     // count t ϵ T such that t is a prefix of s
-    int n_prefixes(const typename it::type& s) {
+    int n_prefixes(const typename iterator::type& s) {
         trie* t = this;
         int ans = t->n_ending;
-        for(int i = it::start; i != it::end(s); i += it::step) {
-            t = t ? t->get(it::at(s, i)) : nullptr;
+        for(iterator i; i < s; ++i) {
+            t = t ? (*t)[i(s)] : nullptr;
             ans += t ? t->n_ending : 0;
         }
         return ans;
     }
     // max LCP(s, t) for all t ϵ T
-    int lcp(const typename it::type& s) {
+    int lcp(const typename iterator::type& s) {
         trie* t = this;
         int ans = 0;
-        for(int i = it::start; i != it::end(s); i += it::step) {
-            t = t ? t->get(it::at(s, i)) : nullptr;
+        for(iterator i; i < s; ++i) {
+            t = t ? (*t)[i(s)] : nullptr;
             ans += t ? 1 : 0;
         }
         return ans;

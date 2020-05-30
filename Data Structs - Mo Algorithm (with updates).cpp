@@ -2,9 +2,14 @@
 using namespace std;
 struct query { int i, L, R; };
 struct update { int i, p, x; };
-template <typename signature> using f = const function<signature>&;
-template <typename T> vector<T> mo(int n, const vector<query>& queries, const vector<update>& updates,
-f<void()> reset, f<void(int)> add, f<void(int)> remove, f<T()> answer, f<void(const update&)> do_update) {
+template <typename T, typename Reset, typename Add, typename Remove, typename Answer, typename Update> 
+vector<T> mo(int n, vector<query>& queries, const vector<update>& updates,
+const Reset& reset, const Add& add, const Remove& remove, const Answer& answer, const Update& do_update) {
+    static_assert(is_convertible<decltype(reset), function<void()>>::value, "reset must be void()");
+    static_assert(is_convertible<decltype(add), function<void(int)>>::value, "add must be void(int)");
+    static_assert(is_convertible<decltype(remove), function<void(int)>>::value, "remove must be void(int)");
+    static_assert(is_convertible<decltype(answer), function<T()>>::value, "answer must be T()");
+    static_assert(is_convertible<decltype(do_update), function<void(const update&)>>::value, "do_update must be void(const update&)");
     vector<T> ans(queries.size());
     int cbrt_n = int(cbrt(n) + 1);
     sort(queries.begin(), queries.end(), [&](auto& a, auto& b) {

@@ -3,10 +3,10 @@
 using namespace std;
 template <typename T> using f = function<T>;
 template <typename TEdge> struct dfs_params {
-    f<void(int)> pre_node{[](int) -> void {}};
-    f<void(int)> pos_node{[](int) -> void {}};
-    f<void(TEdge&)> pre_edge{[](TEdge&) -> void {}};
-    f<void(TEdge&)> pos_edge{[](TEdge&) -> void {}};
+    f<void(int)> pre_node = [](int) -> void {};
+    f<void(int)> pos_node = [](int) -> void {};
+    f<void(TEdge&)> pre_edge = [](TEdge&) -> void {};
+    f<void(TEdge&)> pos_edge = [](TEdge&) -> void {};
     int root = 0;
 };
 template <bool Directed, typename TEdge, bool Index, typename TParamsetter = f<void(dfs_params<TEdge>&)>>

@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 struct query { int i, L, R; };
-template <typename signature> using f = const function<signature>&;
-template <typename T> vector<T> mo(int n, vector<query>& queries,
-f<void(int)> add, f<void(int)> remove, f<T(int, int)> answer) {
+template <typename T, typename Add, typename Remove, typename Answer>
+vector<T> mo(int n, vector<query>& queries, const Add& add, const Remove& remove, const Answer& answer) {
+    static_assert(is_convertible<decltype(add), function<void(int)>>::value, "add must be void(int)");
+    static_assert(is_convertible<decltype(remove), function<void(int)>>::value, "remove must be void(int)");
+    static_assert(is_convertible<decltype(answer), function<T(int, int)>>::value, "answer must be T(int, int)");
     vector<T> ans(queries.size());
     int sqrt_n = int(sqrt(n) + 1);
     sort(queries.begin(), queries.end(), [&](auto& a, auto& b) {
