@@ -1,14 +1,12 @@
 #include <bits/stdc++.h>
 using namespace std;
-template <typename T> vector<int> compress(vector<T>& a, int start_index = 1) {
-    vector<int> compressed(a.size());
-    set<T> values(a.begin(), a.end());
-    map<int, int> m;
-    for(T x : values) {
-        m[x] = start_index++;
-    }
-    for(int i = 0; i < a.size(); i++) {
-        compressed[i] = m[a[i]];
+template <typename T> vector<T> compress(const vector<T>& a) {
+    vector<T> vals = a;
+    sort(vals.begin(), vals.end());
+    vals.erase(unique(vals.begin(), vals.end()), vals.end());
+    vector<T> compressed = a;
+    for(T& val : compressed) {
+        val = upper_bound(vals.begin(), vals.end(), val) - vals.begin();
     }
     return compressed;
 }
