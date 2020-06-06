@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #include "Data Structs - Grid.cpp"
 using namespace std;
+using ll = long long;
 vector<pair<int, int>> hori = {{0, -1}, {0, 1}};
 vector<pair<int, int>> vert = {{-1, 0}, {1, 0}};
 vector<pair<int, int>> diag = {{-1, -1}, {-1, 1}, {1, -1}, {1, 1}};
