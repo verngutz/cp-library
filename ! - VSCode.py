@@ -1,9 +1,10 @@
 import os
 import platform
+import functools
 
 path = {
     'Windows': 'C://Users//Vernon//AppData//Roaming//Code//User//snippets//{language}.json',
-    'Linux': '/home/atpms/.config/Code/User/snippets/{language}.json'
+    'Linux': '/mnt/c/Users/Vernon/AppData/Roaming/Code/User/snippets/{language}.json'
 }
 
 valid = {
@@ -46,7 +47,59 @@ extras = {
     }, {
         'name': 'Foreach Bit',
         'prefix': 'Foreach Bit',
-        'body': ['for(int ${1:i}${1:i} = ${2:mask}, ${1:i} = ctz(${1:i}${1:i}); ${1:i}${1:i} > 0; ${1:i}${1:i} &= ~(${1:i}${1:i} & -${1:i}${1:i}), ${1:i} = ctz(${1:i}${1:i})) {', '\\t$3', '}']
+        'body': [
+            'for(int ${1:i}${1:i} = ${2:mask}, ${1:i} = ctz(${1:i}${1:i}); ${1:i}${1:i} > 0; ${1:i}${1:i} &= ~(${1:i}${1:i} & -${1:i}${1:i}), ${1:i} = ctz(${1:i}${1:i})) {', 
+                '\\t$3', 
+            '}'
+        ]
+    }, {
+        'name': 'Read Tree',
+        'prefix': 'Read Tree',
+        'body': [
+            'int n;',
+            'cin >> n;',
+            'graph<${1:0}, ${2:edge}, ${3:1}> g(n, n - 1);',
+            'for(int i = 0; i < n - 1; i++) {',
+                '\\tint u, v;',
+                '\\tcin >> u >> v;',
+                '\\tg.add_edge({u, v});',
+            '}'
+        ]
+    }, {
+        'name': 'Read Graph',
+        'prefix': 'Read Graph',
+        'body': [
+            'int n, m;',
+            'cin >> n >> m;',
+            'graph<${1:0}, ${2:edge}, ${3:1}> g(n, m);',
+            'for(int i = 0; i < m; i++) {',
+                '\\tint u, v;',
+                '\\tcin >> u >> v;',
+                '\\tg.add_edge({u, v});',
+            '}'
+        ]
+    }, {
+        'name': 'Read Weighted Graph',
+        'prefix': 'Read Weighted Graph',
+        'body': [
+            'int n, m;',
+            'cin >> n >> m;',
+            'graph<${1:0}, ${2:wedge<ll>}, ${3:1}> g(n, m);',
+            'for(int i = 0; i < m; i++) {',
+                '\\tint u, v, w;',
+                '\\tcin >> u >> v >> w;',
+                '\\tg.add_edge({u, v, w});',
+            '}'
+        ]
+    }],
+    'python': [{
+        'name': 'Read Ints',
+        'prefix': 'Read Ints',
+        'body': ['[int(x) for x in input().split()]']
+    }, {
+        'name': 'Multiple Test Cases',
+        'prefix': 'Multiple Test Cases',
+        'body': ['for ${1:_} in range(int(input())):']
     }]
 }
 
@@ -56,25 +109,40 @@ def get_name(file_name):
     except ValueError:
         return file_name[:file_name.index('.')]
 
-def make_snippet(name, prefix, body, file):
-    print(f'\t"{name}": {{ ', file=file)
-    print(f'\t\t"prefix": "{prefix}",', file=file)
-    print('\t\t"body": [', file=file)
-    for line in body:
-        if (name == 'Template'
-            or not line.startswith(('#include <', 'using namespace', 'using ll', 'template <typename T> using lim', 'from', 'import'))
-            or line.startswith(('#include <ext', 'using namespace __gnu'))):
-            line = line.rstrip().replace('"', '\\"')
-            print(f'\t\t\t"{line}",', file=file)
-    print('\t\t]', file=file)
-    print('\t},', file=file)
+ignored = ('#include', 'using namespace std', 'using ll', 'template <typename T> using lim', 'from', 'import')
+
+@functools.lru_cache
+def make_snippet(file_name, is_template=False):
+    def gen():
+        try:
+            with open(file_name, encoding='utf-8', mode='r') as source:
+                for line in source:
+                    if is_template or not line.startswith(ignored):
+                        yield line.rstrip().replace('"', '\\"')
+                    elif line.startswith('#include "'):
+                        included_file_name = line[line.index('"')+1:line.rindex('"')]
+                        print(f'\tdependency: {included_file_name}')
+                        yield from make_snippet(included_file_name)
+        except FileNotFoundError:
+            print('file not found')
+    return list(gen())
+
+def write_snippet(name, prefix, output_file, body=None, file_name=None):
+    print(file_name or name)
+    print(f'\t"{name}": {{ ', file=output_file)
+    print(f'\t\t"prefix": "{prefix}",', file=output_file)
+    print('\t\t"body": [', file=output_file)
+    for line in body or make_snippet(file_name, name == 'Template'):
+        print(f'\t\t\t"{line}",', file=output_file)
+    print('\t\t]', file=output_file)
+    print('\t},', file=output_file)
 
 for language in ['cpp', 'python']:
-    with open(path[platform.system()].format(language=language), encoding='utf-8', mode='w') as f:
-        print('{', file=f)
+    with open(path[platform.system()].format(language=language), encoding='utf-8', mode='w') as output_file:
+        print('{', file=output_file)
         for file_name in [f for f in os.listdir('.') if valid[language](f)]:
             with open(file_name, encoding='utf-8', mode='r') as source:
-                make_snippet(get_name(file_name), get_name(file_name), source, f)
+                write_snippet(get_name(file_name), get_name(file_name), output_file, file_name=file_name)
         for snippet in extras.get(language, []):
-            make_snippet(snippet['name'], snippet['prefix'], snippet['body'], f)
-        print('}', file=f)
+            write_snippet(snippet['name'], snippet['prefix'], output_file, body=snippet['body'])
+        print('}', file=output_file)

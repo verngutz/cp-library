@@ -1,0 +1,31 @@
+#!/bin/bash
+set -e
+tc=1
+while : ; do
+    echo -e "\e[34m./${1:-gen.py} $tc > input.txt\e[39m"
+    ./${1:-gen.py} $tc > input.txt
+    if [ -f "solution" ]; then 
+        echo -e "\e[34m./${2:-solution} < input.txt > output.txt\e[39m"
+        ./${2:-solution} < input.txt > output.txt
+    else
+        echo -e "\e[34m./${2:-solution.py} < input.txt > output.txt\e[39m"
+        ./${2:-solution.py} < input.txt > output.txt
+    fi
+    echo -e "\e[34m./${3:-brute.py} < input.txt > expected.txt\e[39m"
+    ./${3:-brute.py} < input.txt > expected.txt
+    echo -e "\e[34m./${4:-scorer.py} < output.txt > output_score.txt\e[39m"
+    ./${4:-scorer.py} < output.txt > output_score.txt
+    echo -e "\e[34m./${4:-scorer.py} < expected.txt > expected_score.txt\e[39m"
+    ./${4:-scorer.py} < expected.txt > expected_score.txt
+    if ! cmp --silent output_score.txt expected_score.txt ; then
+        echo -e "\e[31mtest failed\e[39m"
+        echo -e "\e[33minput:\e[39m"
+        cat input.txt
+        echo -e "\e[33moutput:\e[39m"
+        cat output_score.txt
+        echo -e "\e[33mexpected:\e[39m"
+        cat expected_score.txt
+        break
+    fi
+    echo -e "\e[32m$((tc++)) test cases passed\e[39m"
+done

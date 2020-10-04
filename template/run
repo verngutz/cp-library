@@ -1,0 +1,16 @@
+#!/bin/bash
+echo -e "\e[33m"
+echo -e "rm ${1:-solution}"
+rm ${1:-solution}
+echo -e "g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp"
+g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp
+echo -e "chmod +x ${1:-solution}"
+chmod +x ${1:-solution}
+if [ -f "input.txt" ]; then
+    echo -e "./${1:-solution} < ${2:-input.txt}"
+    ./${1:-solution} < ${2:-input.txt}
+else
+    echo -e "./${1:-solution} < ${2:-testcases/0.in}"
+    ./${1:-solution} < ${2:-testcases/0.in}
+fi
+echo -e "\e[39m"
