@@ -19,7 +19,7 @@ def print_test(test, input_file=sys.stdout):
 for i in range(3):
     print_test(make_single_test())
     print(termcolor.colored(f'Printed sample test {i}.', 'yellow'))
-input(termcolor.colored('Press ENTER to continue', 'yellow'))
+input(termcolor.colored('Press ENTER to continue', 'magenta', attrs=['bold']))
 
 for i, test in enumerate(tests or (make_single_test() for i in itertools.count()), start=1):
     print(termcolor.colored(f'Test Case {i}', 'blue'))
@@ -39,10 +39,10 @@ for i, test in enumerate(tests or (make_single_test() for i in itertools.count()
     try:
         subprocess.run('cmp --silent output.txt expected.txt', shell=True, check=True)
     except subprocess.CalledProcessError:
-        print(termcolor.colored(f'test failed', 'red'))
+        print(termcolor.colored(f'test failed', 'red', attrs=['bold']))
         for file in ('input', 'output', 'expected'):
             print(termcolor.colored(f'{file}:', 'yellow'))
             subprocess.run(f'cat {file}.txt', shell=True)
         break
 
-    print(termcolor.colored(f'{i} test cases passed', 'green'))
+    print(termcolor.colored(f'{i} test cases passed', 'green', attrs=['bold']))
