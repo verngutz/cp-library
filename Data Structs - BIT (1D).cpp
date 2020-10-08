@@ -20,4 +20,12 @@ template <typename T> struct bit {
     T sum(int L, int R) {
         return sum(R) - sum(L - 1);
     }
+    friend ostream& operator<<(ostream& os, bit& t) {
+        os << "[";
+        for(int i = 1; i <= t.n; i++) {
+            if(i != 1) os << ", ";
+            os << t.sum(i, i);
+        }
+        return os << "]";
+    }
 };
