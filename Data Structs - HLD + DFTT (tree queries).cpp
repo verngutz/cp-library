@@ -1,12 +1,12 @@
 #include <bits/stdc++.h>
 #include "Data Structs - HLD + DFTT.cpp"
 using namespace std;
-enum class tree_t { node_values, edge_values };
+enum struct tree_t { node_values, edge_values };
 template <tree_t T, typename SegmentTree, typename TEdge, bool Index> struct tree_queries {
     SegmentTree& st;
     flat_tree<TEdge, Index> ft;
     vector<int> &head, &p, &d, &f;
-    tree_queries(SegmentTree& st, graph<0, TEdge, Index>& g, int root = Index) 
+    tree_queries(SegmentTree& st, graph<0, TEdge, Index>& g, int root = Index)
     : st(st), ft(g, root), head(ft.head), p(ft.p), d(ft.d), f(ft.f) {}
     void node_update(int u, typename SegmentTree::DeltaType value) {
         st.update(d[u], value);
@@ -22,14 +22,16 @@ template <tree_t T, typename SegmentTree, typename TEdge, bool Index> struct tre
         st.update(d[root], f[root], value, true);
     }
     typename SegmentTree::Type anc_path_query(int from, int to) {
+        if(from == to) return st.m.identity;
         if(d[from] < d[to]) swap(from, to);
         if(head[from] == head[to]) {
             return st.query(d[to] + 1, d[from], true);
         } else {
-            return st.combine(st.query(d[head[from]], d[from], true), anc_path_query(p[head[from]], to));
+            return st.m.combine(st.query(d[head[from]], d[from], true), anc_path_query(p[head[from]], to));
         }
     }
     void anc_path_update(int from, int to, typename SegmentTree::DeltaType value) {
+        if(from == to) return;
         if(d[from] < d[to]) swap(from, to);
         if(head[from] == head[to]) {
             st.update(d[to] + 1, d[from], value, true);
@@ -39,8 +41,8 @@ template <tree_t T, typename SegmentTree, typename TEdge, bool Index> struct tre
     }
     typename SegmentTree::Type path_query(int u, int v) {
         int l = ft.lca(u, v);
-        auto ans = st.combine(anc_path_query(u, l), anc_path_query(l, v));
-        return T == tree_t::node_values ? st.combine(ans, st.query(d[l])) : ans;
+        typename SegmentTree::Type ans = st.m.combine(anc_path_query(u, l), anc_path_query(l, v));
+        return T == tree_t::node_values ? st.m.combine(ans, st.query(d[l])) : ans;
     }
     void path_update(int u, int v, typename SegmentTree::DeltaType value) {
         int l = ft.lca(u, v);

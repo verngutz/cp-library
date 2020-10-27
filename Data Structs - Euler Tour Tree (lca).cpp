@@ -15,7 +15,7 @@ template <typename TEdge, bool Index> struct ett_lca {
         for(int i = 0; i < ft.tour.size(); i++) {
             depthed_tour[i] = {depth[ft.tour[i]], ft.tour[i]};
         }
-        return sparse_table<pii>(depthed_tour, {{lim<int>::max(), 0}, [](pii x, pii y) { return min(x, y); }});
+        return sparse_table<pii>(depthed_tour, {{lim<int>::max(), 0}, [](const pii& x, const pii& y) { return min(x, y); }});
     }
     int lca(int u, int v) {
         return u == v ? u : (f[u] < d[v] ? st.query(f[u], d[v], true) : st.query(f[v], d[u], true)).second;

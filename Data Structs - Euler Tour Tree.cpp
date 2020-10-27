@@ -10,7 +10,7 @@ template <typename TEdge, bool Index> struct flat_tree {
             params.pre_node = [&](int u) { tour[d[u] = f[u] = timer++] = u; };
             params.pre_edge = [&](TEdge& e) { depth[e.v] = depth[e.u] + 1; };
             params.pos_edge = [&](TEdge& e) { tour[f[e.u] = timer++] = e.u; };
-            params.root = index;
+            params.root = root;
         });
     }
 };

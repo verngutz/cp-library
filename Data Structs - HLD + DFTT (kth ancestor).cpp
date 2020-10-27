@@ -1,5 +1,5 @@
 #include "Data Structs - HLD + DFTT.cpp"
-int kth_ancestor(flat_tree& f, int u, int k) {
+template <typename TEdge, bool Index> int kth_ancestor(flat_tree<TEdge, Index>& f, int u, int k) {
     static vector<int> node_at;
     if(node_at.empty()) {
         node_at.resize(f.n + 1);
