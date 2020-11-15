@@ -1,10 +1,7 @@
 #include <bits/stdc++.h>
 #include "Data Structs - Union-Find (with union-by-rank).cpp"
-using namespace std;
 struct ufds_members : public ufds_with_rank {
-private:
     vector<vector<int>> members;
-public:
     ufds_members(int n) : ufds_with_rank(n, [this](int u, int v) {
         members[v].insert(members[v].end(), members[u].begin(), members[u].end());
         vector<int>().swap(members[u]);
