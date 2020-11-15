@@ -4,7 +4,8 @@ import functools
 
 path = {
     'Windows': 'C://Users//Vernon//AppData//Roaming//Code//User//snippets//{language}.json',
-    'Linux': '/mnt/c/Users/Vernon/AppData/Roaming/Code/User/snippets/{language}.json'
+    'Linux': '/mnt/c/Users/Vernon/AppData/Roaming/Code/User/snippets/{language}.json',
+    'Darwin': '/Users/vernon/Library/Application Support/Code/User/snippets/{language}.json'
 }
 
 valid = {
