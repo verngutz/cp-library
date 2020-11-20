@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+tc=1
+while : ; do
+    if [ -f "solution" ]; then 
+        echo -e "\e[34mpython3 interactive_runner.py ./gen.py ${tc} -- ./${2:-solution}\e[39m"
+        python3 interactive_runner.py ./gen.py ${tc} -- ./${2:-solution}
+    else
+        echo -e "\e[34mpython3 interactive_runner.py ./gen.py ${tc} -- ./${2:-solution.py}\e[39m"
+        python3 interactive_runner.py ./gen.py ${tc} -- ./${2:-solution.py}
+    fi
+    echo -e "\e[32m$((tc++)) test cases passed\e[39m"
+done

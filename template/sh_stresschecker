@@ -1,17 +1,18 @@
 #!/bin/bash
 set -e
+sudo mount -t tmpfs -o size=1024m tmpfs /mnt/tmpfs
 tc=1
 while : ; do
-    echo -e "\e[34m./${1:-gen.py} $tc > input.txt\e[39m"
-    ./${1:-gen.py} $tc > input.txt
+    echo -e "\e[34m./${1:-gen.py} $tc > /mnt/tmpfs/input.txt\e[39m"
+    ./${1:-gen.py} $tc > /mnt/tmpfs/input.txt
     if [ -f "solution" ]; then 
-        echo -e "\e[34m./${2:-solution} < input.txt > output.txt\e[39m"
-        ./${2:-solution} < input.txt > output.txt
+        echo -e "\e[34m./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     else
-        echo -e "\e[34m./${2:-solution.py} < input.txt > output.txt\e[39m"
-        ./${2:-solution.py} < input.txt > output.txt
+        echo -e "\e[34m./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     fi
-    echo -e "\e[34m./${3:-checker.py} < output.txt\e[39m"
-    ./${3:-checker.py} < output.txt
+    echo -e "\e[34m./${3:-checker.py} < /mnt/tmpfs/output.txt\e[39m"
+    ./${3:-checker.py} < /mnt/tmpfs/output.txt
     echo -e "\e[32m$((tc++)) test cases passed\e[39m"
 done

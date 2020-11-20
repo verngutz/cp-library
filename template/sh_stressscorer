@@ -1,30 +1,31 @@
 #!/bin/bash
 set -e
+sudo mount -t tmpfs -o size=1024m tmpfs /mnt/tmpfs
 tc=1
 while : ; do
-    echo -e "\e[34m./${1:-gen.py} $tc > input.txt\e[39m"
-    ./${1:-gen.py} $tc > input.txt
+    echo -e "\e[34m./${1:-gen.py} $tc > /mnt/tmpfs/input.txt\e[39m"
+    ./${1:-gen.py} $tc > /mnt/tmpfs/input.txt
     if [ -f "solution" ]; then 
-        echo -e "\e[34m./${2:-solution} < input.txt > output.txt\e[39m"
-        ./${2:-solution} < input.txt > output.txt
+        echo -e "\e[34m./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     else
-        echo -e "\e[34m./${2:-solution.py} < input.txt > output.txt\e[39m"
-        ./${2:-solution.py} < input.txt > output.txt
+        echo -e "\e[34m./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     fi
-    echo -e "\e[34m./${3:-brute.py} < input.txt > expected.txt\e[39m"
-    ./${3:-brute.py} < input.txt > expected.txt
-    echo -e "\e[34m./${4:-scorer.py} < output.txt > output_score.txt\e[39m"
-    ./${4:-scorer.py} < output.txt > output_score.txt
-    echo -e "\e[34m./${4:-scorer.py} < expected.txt > expected_score.txt\e[39m"
-    ./${4:-scorer.py} < expected.txt > expected_score.txt
-    if ! cmp --silent output_score.txt expected_score.txt ; then
+    echo -e "\e[34m./${3:-brute.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt\e[39m"
+    ./${3:-brute.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt
+    echo -e "\e[34m./${4:-scorer.py} < /mnt/tmpfs/output.txt > /mnt/tmpfs/output_score.txt\e[39m"
+    ./${4:-scorer.py} < /mnt/tmpfs/output.txt > /mnt/tmpfs/output_score.txt
+    echo -e "\e[34m./${4:-scorer.py} < /mnt/tmpfs/expected.txt > /mnt/tmpfs/expected_score.txt\e[39m"
+    ./${4:-scorer.py} < /mnt/tmpfs/expected.txt > /mnt/tmpfs/expected_score.txt
+    if ! cmp --silent /mnt/tmpfs/output_score.txt /mnt/tmpfs/expected_score.txt ; then
         echo -e "\e[31mtest failed\e[39m"
         echo -e "\e[33minput:\e[39m"
-        cat input.txt
+        cat /mnt/tmpfs/input.txt
         echo -e "\e[33moutput:\e[39m"
-        cat output_score.txt
+        cat /mnt/tmpfs/output_score.txt
         echo -e "\e[33mexpected:\e[39m"
-        cat expected_score.txt
+        cat /mnt/tmpfs/expected_score.txt
         break
     fi
     echo -e "\e[32m$((tc++)) test cases passed\e[39m"

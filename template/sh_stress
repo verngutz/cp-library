@@ -1,26 +1,27 @@
 #!/bin/bash
 set -e
+sudo mount -t tmpfs -o size=1024m tmpfs /mnt/tmpfs
 tc=1
 while : ; do
-    echo -e "\e[34m./${1:-gen.py} $tc > input.txt\e[39m"
-    ./${1:-gen.py} $tc > input.txt
-    if [ -f "skeleton" ]; then
-        echo -e "\e[34m./${2:-solution} < input.txt > output.txt\e[39m"
-        ./${2:-solution} < input.txt > output.txt
+    echo -e "\e[34m./${1:-gen.py} $tc > /mnt/tmpfs/input.txt\e[39m"
+    ./${1:-gen.py} $tc > /mnt/tmpfs/input.txt
+    if [ -f "solution" ]; then
+        echo -e "\e[34m./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     else
-        echo -e "\e[34m./${2:-solution.py} < input.txt > output.txt\e[39m"
-        ./${2:-solution.py} < input.txt > output.txt
+        echo -e "\e[34m./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
+        ./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
     fi
-    echo -e "\e[34m./${3:-brute.py} < input.txt > expected.txt\e[39m"
-    ./${3:-brute.py} < input.txt > expected.txt
-    if ! cmp --silent output.txt expected.txt ; then
+    echo -e "\e[34m./${3:-brute.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt\e[39m"
+    ./${3:-brute.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt
+    if ! cmp --silent /mnt/tmpfs/output.txt /mnt/tmpfs/expected.txt ; then
         echo -e "\e[31mtest failed\e[39m"
         echo -e "\e[33minput:\e[39m"
-        cat input.txt
+        cat /mnt/tmpfs/input.txt
         echo -e "\e[33moutput:\e[39m"
-        cat output.txt
+        cat /mnt/tmpfs/output.txt
         echo -e "\e[33mexpected:\e[39m"
-        cat expected.txt
+        cat /mnt/tmpfs/expected.txt
         break
     fi
     echo -e "\e[32m$((tc++)) test cases passed\e[39m"
