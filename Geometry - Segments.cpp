@@ -2,8 +2,7 @@
 #include "Geometry - Vectors.cpp"
 #include "Geometry - Lines.cpp"
 using namespace std;
-template <typename T>
-struct segment2D {
+template <typename T> struct segment2D {
     vec2D<T> p1, p2;
     T power(const vec2D<T>& p) const { return (p1 - p) | (p2 - p); }
     T turn(const vec2D<T>& p) const { return (p2 - p1) * (p - p1); }
@@ -25,11 +24,11 @@ struct segment2D {
     vec2D<T> proper_intersection(const segment2D& s) const {
         return line2D<T>(p1, p2).intersection(line2D<T>(s.p1, s.p2));
     }
-    set<segment2D> intersection(const segment2D& s) const { 
+    set<vec2D<T>> intersection(const segment2D& s) const {
         if(has_proper_intersection(s)) {
             return {proper_intersection(s)};
         } else {
-            set<segment2D> ans;
+            set<vec2D<T>> ans;
             for(const vec2D<T>& v : {p1, p2, s.p1, s.p2}) {
                 if(contains(v) and s.contains(v)) {
                     ans.insert(v);
