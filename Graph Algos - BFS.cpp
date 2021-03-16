@@ -2,7 +2,7 @@
 #include "Graph Structures - Incidence List.cpp"
 template <typename T> using lim = numeric_limits<T>;
 template <bool Directed, typename TEdge, bool Index>
-pair<vector<int>, vector<int>> bfs(const graph<Directed, TEdge, Index>& g, const vector<int>& s) {
+pair<vector<int>, vector<int>> bfs(graph<Directed, TEdge, Index>& g, const vector<int>& s) {
     vector<int> d(g.adj.size(), lim<int>::max()), p(g.adj.size(), -1);
     queue<int> q;
     for(int u : s) {
