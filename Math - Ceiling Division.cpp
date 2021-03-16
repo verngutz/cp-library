@@ -1,4 +1,3 @@
-using ll = long long;
-ll ceildiv(ll x, ll y) {
+template <typename T> T ceildiv(T x, T y) {
     return (x + y - 1) / y;
 }
