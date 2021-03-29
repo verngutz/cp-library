@@ -25,7 +25,7 @@ extras = {
             'auto begin_t = chrono::high_resolution_clock::now();',
             'auto end_t = chrono::high_resolution_clock::now();',
             'chrono::duration<double> elapsed = end_t - begin_t;',
-            'cerr << "Elapsed time: " << elapsed.count() << endl;'
+            'cerr << \\"Elapsed time: \\" << elapsed.count() << endl;'
         ]
     }, {
         'name': 'Memo Reset',
@@ -101,6 +101,10 @@ extras = {
         'name': 'Multiple Test Cases',
         'prefix': 'Multiple Test Cases',
         'body': ['for ${1:_} in range(int(input())):']
+    }, {
+        'name': 'List of Zeros',
+        'prefix': 'List of Zeros',
+        'body': ['[0 for _ in range(${1:n})]']
     }]
 }
 
