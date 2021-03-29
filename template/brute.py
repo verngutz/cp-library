@@ -1,3 +1,3 @@
 #!/usr/bin/python3
-import sys
+import itertools, sys
 input = lambda: sys.stdin.readline().strip()

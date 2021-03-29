@@ -7,10 +7,34 @@ g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${
 echo -e "chmod +x ${1:-solution}"
 chmod +x ${1:-solution}
 if [ -f "input.txt" ]; then
-    echo -e "./${1:-solution} < ${2:-input.txt}"
-    ./${1:-solution} < ${2:-input.txt}
+    echo -e "./${1:-solution} < ${2:-input.txt} > ${3:-output.txt}"
+    ./${1:-solution} < ${2:-input.txt} > ${3:-output.txt}
+    cat ${3:-output.txt}
+    if cmp --silent ${3:-output.txt} ${4:-expected.txt} ; then
+        echo -e "\e[32mtest passed\e[39m"
+    else
+        echo -e "\e[31mtest failed\e[39m"
+        echo -e "\e[33minput:\e[39m"
+        cat ${2:-input.txt}
+        echo -e "\e[33moutput:\e[39m"
+        cat ${3:-output.txt}
+        echo -e "\e[33mexpected:\e[39m"
+        cat ${4:-expected.txt}
+    fi
 else
-    echo -e "./${1:-solution} < ${2:-testcases/0.in}"
-    ./${1:-solution} < ${2:-testcases/0.in}
+    echo -e "./${1:-solution} < ${2:-testcases/0.in} > ${3:-testcases/0.out}"
+    ./${1:-solution} < ${2:-testcases/0.in} > ${3:-testcases/0.out}
+    cat ${3:-testcases/0.out}
+    if cmp --silent ${3:-testcases/0.out} ${4:-testcases/0.ans} ; then
+        echo -e "\e[32mtest passed\e[39m"
+    else
+        echo -e "\e[31mtest failed\e[39m"
+        echo -e "\e[33minput:\e[39m"
+        cat ${2:-testcases/0.in}
+        echo -e "\e[33moutput:\e[39m"
+        cat ${3:-testcases/0.out}
+        echo -e "\e[33mexpected:\e[39m"
+        cat ${4:-testcases/0.ans}
+    fi
 fi
 echo -e "\e[39m"

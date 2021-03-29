@@ -7,12 +7,25 @@ while : ; do
     ./${1:-gen.py} $tc > /mnt/tmpfs/input.txt
     if [ -f "solution" ]; then 
         echo -e "\e[34m./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
-        ./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
+        if ! ./${2:-solution} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt ; then
+            echo -e "\e[31msolution runtime error\e[39m"
+            echo -e "\e[33minput:\e[39m"
+            cat /mnt/tmpfs/input.txt
+            break
+        fi
     else
         echo -e "\e[34m./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt\e[39m"
-        ./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt
+        if ! ./${2:-solution.py} < /mnt/tmpfs/input.txt > /mnt/tmpfs/output.txt ; then
+            echo -e "\e[31msolution runtime error\e[39m"
+            echo -e "\e[33minput:\e[39m"
+            cat /mnt/tmpfs/input.txt
+            break
+        fi
     fi
     echo -e "\e[34m./${3:-checker.py} < /mnt/tmpfs/output.txt\e[39m"
-    ./${3:-checker.py} < /mnt/tmpfs/output.txt
+    if ! ./${3:-checker.py} < /mnt/tmpfs/output.txt ; then
+        cp /mnt/tmpfs/input.txt ./input.txt
+        break
+    fi
     echo -e "\e[32m$((tc++)) test cases passed\e[39m"
 done
