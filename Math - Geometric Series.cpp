@@ -1,21 +1,4 @@
-#include <bits/stdc++.h>
 #include "Math - Modular Arithmetic.cpp"
-// Σ i for i in [0, n)
-template <typename T = ll> T arith0(T n) {
-    return n * (n - 1) / 2;
-}
-// Σ i for i in [1, n]
-template <typename T = ll> T arith1(T n) {
-    return n * (n + 1) / 2;
-}
-// Σ a0 + r*i for i in [0, n)
-template <typename T = ll> T arith0(T a0, T r, T n) {
-    return a0 * n + r * arith0(n);
-}
-// Σ a0 + r*i for i in [1, n]
-template <typename T = ll> T arith1(T a0, T r, T n) {
-    return a0 * n + r * arith1(n);
-}
 // Σ r^i for i in [0, ∞), r < 1
 // fraction geom0_inf(fraction r) {
 template <typename T = mint> T geom0_inf(T r) {
