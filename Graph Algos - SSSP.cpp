@@ -22,5 +22,5 @@ pair<vector<T>, vector<int>> sssp(graph<Directed, wedge<T>, Index>& g, const vec
             }
         }
     }
-    return {d, p};
+    return {move(d), move(p)};
 }

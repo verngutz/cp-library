@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 template <typename F> void combinations(int n, int k, const F& f) {
-    static_assert(is_convertible<decltype(f), function<void(vector<int>&)>>::value, "f must be void(vector<int>&)");
+    static_assert(is_convertible<decltype(f), function<void(vector<int>&)>>::value);
     function<void(int, vector<int>&)> rb = [&](int i, vector<int>& c) {
         if(c.size() == k) {
             f(c);

@@ -32,5 +32,5 @@ template <bool Index> pair<vector<int>, vector<vector<int>>> find_bccs(graph<0, 
     for(int u = Index; u < g.adj.size(); u++) if(not vis[u]) {
         dfs(u, 0);
     }
-    return {cut_node, bccs};
+    return {move(cut_node), move(bccs)};
 }

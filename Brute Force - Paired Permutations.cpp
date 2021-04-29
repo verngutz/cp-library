@@ -5,7 +5,7 @@ using namespace std;
 // p[0] is paired with p[n-1], p[1] with p[n-2], etc.
 // runs in n (n - 2) (n - 4) ... time
 template <typename F> void paired_permutations(int n, const F& f) {
-    static_assert(is_convertible<decltype(f), void(vector<int>&)>::value, "f must be void(vector<int>&)");
+    static_assert(is_convertible<decltype(f), void(vector<int>&)>::value);
     vector<int> p(n);
     iota(p.begin(), p.end(), 0);
     function<void(int)> rb = [&](int i) {

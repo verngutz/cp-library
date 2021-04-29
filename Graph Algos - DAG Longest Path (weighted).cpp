@@ -30,5 +30,5 @@ const vector<T>& node_weight = vector<T>()) {
             longest_path(root);
         }
     }
-    return {opt, arg};
+    return {move(opt), move(arg)};
 }

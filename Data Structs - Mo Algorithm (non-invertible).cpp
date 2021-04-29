@@ -3,9 +3,9 @@ using namespace std;
 struct query { int i, L, R; };
 template <typename T, typename Reset, typename Add1, typename Add2> 
 vector<T> mo(int n, vector<query>& queries, const Reset& reset, const Add1& add_and_commit, const Add2& add_range_no_commit) {
-    static_assert(is_convertible<decltype(reset), function<void()>>::value, "reset must be void()");
-    static_assert(is_convertible<decltype(add_and_commit), function<void(int)>>::value, "add_and_commit must be void(int)");
-    static_assert(is_convertible<decltype(add_range_no_commit), function<T(int, int)>>::value, "add_range_no_commit must be T(int, int)");
+    static_assert(is_convertible<decltype(reset), function<void()>>::value);
+    static_assert(is_convertible<decltype(add_and_commit), function<void(int)>>::value);
+    static_assert(is_convertible<decltype(add_range_no_commit), function<T(int, int)>>::value);
     vector<T> ans(queries.size());
     int sqrt_n = int(sqrt(n) + 1);
     auto block = [sqrt_n](query& q) { return q.L / sqrt_n; };

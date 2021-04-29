@@ -26,5 +26,5 @@ template <bool Index> pair<deque<int>, vector<int>> find_centers(graph<0, edge, 
     for(int u : q) {
         sort(g[u].begin(), g[u].end(), [&](int e1, int e2) { return height[g(e1).v] > height[g(e2).v]; });
     }
-    return {q, height};
+    return {move(q), move(height)};
 }

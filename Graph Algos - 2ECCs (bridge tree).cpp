@@ -15,7 +15,7 @@ const vector<int>& cut_edge, const vector<vector<int>>& _2eccs) {
             bridge_tree.add_edge({_2ecc_id[g(e).u], _2ecc_id[g(e).v]});
         }
     }
-    return {_2ecc_id, bridge_tree};
+    return {move(_2ecc_id), move(bridge_tree)};
 }
 template <typename TEdge, bool Index> pair<vector<int>, graph<0, TEdge, Index>> build_bridge_tree(graph<0, TEdge, Index>& g) {
     auto [cut_edge, _2eccs] = find_2eccs(g);

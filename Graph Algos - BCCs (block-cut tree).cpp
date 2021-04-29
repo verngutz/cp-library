@@ -18,7 +18,7 @@ const vector<int>& cut_node, const vector<vector<int>>& bccs) {
             block_cut_tree.add_edge({bcc_node_id[u], bcc_edge_id[e]});
         }
     }
-    return {bcc_edge_id, bcc_node_id, block_cut_tree};
+    return {move(bcc_edge_id), move(bcc_node_id), move(block_cut_tree)};
 }
 template <bool Index> tuple<vector<int>, vector<int>, graph<0, edge, Index>> build_block_cut_tree(graph<0, edge, Index>& g) {
     auto [cut_node, bccs] = find_bccs(g);

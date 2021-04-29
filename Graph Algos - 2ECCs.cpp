@@ -32,5 +32,5 @@ template <typename TEdge, bool Index> pair<vector<int>, vector<vector<int>>> fin
             _2eccs.back().push_back(s.back()), s.pop_back();
         }
     }
-    return {cut_edge, _2eccs};
+    return {move(cut_edge), move(_2eccs)};
 }

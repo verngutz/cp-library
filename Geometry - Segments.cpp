@@ -34,7 +34,7 @@ template <typename T> struct segment2D {
                     ans.insert(v);
                 }
             }
-            return ans;
+            return move(ans);
         }
     }
     friend ostream& operator<<(ostream& os, const segment2D<T>& s) { return os << s.p1 << "-" << s.p2; }

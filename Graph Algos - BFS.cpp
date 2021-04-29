@@ -18,5 +18,5 @@ pair<vector<int>, vector<int>> bfs(graph<Directed, TEdge, Index>& g, const vecto
             }
         }
     }
-    return {d, p};
+    return {move(d), move(p)};
 }

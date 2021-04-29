@@ -11,10 +11,10 @@ template <typename T> struct vec2D {
     vec2D& operator-=(const vec2D& v) { x -= v.x, y -= v.y; return *this; }
     vec2D& operator*=(const T c) { x *= c, y *= c; return *this; }
     vec2D& operator/=(const T c) { x /= c, y /= c; return *this; }
-    vec2D operator+(const vec2D& v) const { return vec2D(*this) += v; }
-    vec2D operator-(const vec2D& v) const { return vec2D(*this) -= v; }
-    vec2D operator*(const T c) const { return vec2D(*this) *= c; }
-    vec2D operator/(const T c) const { return vec2D(*this) /= c; }
+    vec2D operator+(const vec2D& v) const { return move(vec2D(*this) += v); }
+    vec2D operator-(const vec2D& v) const { return move(vec2D(*this) -= v); }
+    vec2D operator*(const T c) const { return move(vec2D(*this) *= c); }
+    vec2D operator/(const T c) const { return move(vec2D(*this) /= c); }
     vec2D operator-() const { return {-x, -y}; }
     T operator*(const vec2D& v) const { return x * v.y - y * v.x; } // cross product
     T operator|(const vec2D& v) const { return x * v.x + y * v.y; } // dot product

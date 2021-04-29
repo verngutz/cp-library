@@ -11,7 +11,7 @@ template <typename TEdge> struct dfs_params {
 };
 template <bool Directed, typename TEdge, bool Index, typename TParamsetter = f<void(dfs_params<TEdge>&)>>
 vector<int> dfs(graph<Directed, TEdge, Index>& g, const TParamsetter& psetter = [](dfs_params<TEdge>&) {}) {
-    static_assert(is_convertible<decltype(psetter), f<void(dfs_params<TEdge>&)>>::value, "psetter must be void(dfs_params<TEdge>&)");
+    static_assert(is_convertible<decltype(psetter), f<void(dfs_params<TEdge>&)>>::value);
     dfs_params<TEdge> params;
     psetter(params);
     vector<int> component(g.adj.size());

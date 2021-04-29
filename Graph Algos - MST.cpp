@@ -19,5 +19,5 @@ pair<T, vector<int>> mst(graph<Directed, wedge<T>, Index>& g, int s = Index) {
             }
         }
     }
-    return {accumulate(d.begin() + Index, d.end(), T(0)), p};
+    return {accumulate(d.begin() + Index, d.end(), T(0)), move(p)};
 }

@@ -26,5 +26,5 @@ tuple<vector<T>, vector<int>, vector<bool>> sssp(graph<Directed, wedge<T>, Index
             }
         }
     }
-    return {d, p, neg_cycle};
+    return {move(d), move(p), move(neg_cycle)};
 }

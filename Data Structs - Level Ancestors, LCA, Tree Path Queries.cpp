@@ -112,7 +112,7 @@ public:
     #ifdef DEBUG
         using actual_type = typename callable_traits<Function>::function_type;
         using expected_type = typename callable_traits<bool(int)>::function_type;
-        static_assert(is_same<actual_type, expected_type>::value, "bsearch 'can' must be bool(int)");
+        static_assert(is_same<actual_type, expected_type>::value);
     #endif
         assert(built);
         if(limit == -1) limit = depth[u];

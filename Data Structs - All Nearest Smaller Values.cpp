@@ -2,7 +2,7 @@
 using namespace std;
 template <typename T, typename Cmp = decltype(less<T>())>
 vector<int> nsv(const vector<T>& a, int L, int R, int d, Cmp&& cmp = less<T>()) {
-    static_assert(is_convertible<decltype(cmp), function<bool(T, T)>>::value, "cmp must be bool(T, T)");
+    static_assert(is_convertible<decltype(cmp), function<bool(T, T)>>::value);
     vector<int> s, nearest_smaller_to(a.size());
     for(int i = L; i != R; i += d) {
         while(not s.empty() and not cmp(a[s.back()], a[i])) {

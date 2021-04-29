@@ -28,5 +28,5 @@ pair<vector<T>, vector<TCount>> sssp_count(graph<Directed, wedge<T>, Index>& g, 
             }
         }
     }
-    return {d, c};
+    return {move(d), move(c)};
 }
