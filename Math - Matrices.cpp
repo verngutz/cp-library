@@ -29,7 +29,7 @@ template <typename T> using matrix = vector<vector<T>>;
 template <typename T> matrix<T> I(size_t n) {
     matrix<T> I(n, vector<T>(n));
     for(size_t i = 0; i < n; i++) I[i][i] = T(1);
-    return move(I);
+    return I;
 }
 template <typename T> matrix<T>& operator+=(matrix<T>& A, const matrix<T>& B) {
     transform(A.begin(), A.end(), B.begin(), A.begin(), plus<vector<T>>());
@@ -108,7 +108,7 @@ template <typename T> matrix<T> operator~(matrix<T> A) {
         for(int i = direction == 1 ? 0 : A.size() - 1; 0 <= i and i < A.size(); i += direction) {
             y += (ans[i] = y[i]) / A[i][i] * A[i];
         }
-        return move(ans);
+        return ans;
     };
     transform(inverse.begin(), inverse.end(), inverse.begin(), [&](const vector<T>& column) {
         return move(back_substitute(U, -1, back_substitute(L, 1, column))); 
