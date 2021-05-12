@@ -59,6 +59,7 @@ template <typename T> vector<T> operator|(const matrix<T>& A, const vector<T>& c
     return inner_product(A.begin(), A.end(), column.begin(), vector<T>(A[0].size()));
 }
 template <typename T> matrix<T>& operator*=(matrix<T>& B, const matrix<T>& A) {
+    if(addressof(B) == addressof(A)) return B = (A * B);
     transform(B.begin(), B.end(), B.begin(), [&](const vector<T>& column) { return move(A | column); });
     return B;
 }
