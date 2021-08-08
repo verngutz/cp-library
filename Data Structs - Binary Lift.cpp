@@ -4,15 +4,18 @@ using namespace std;
 template <typename TEdge, bool Index> struct binary_lift {
     vector<int> depth;
     vector<vector<int>> p;
-    binary_lift(graph<0, TEdge, Index>& g) : depth(g.adj.size()), p(g.adj.size()) {
-        dfs(g, [&](dfs_params<TEdge>& params) {
-            params.root = Index;
-            params.pre_edge = [&](TEdge& e) {
-                p[e.v].resize(__lg(depth[e.v] = depth[e.u] + 1) + 1);
-                p[e.v][0] = e.u;
-                build_ancestors(e.v);
-            };
-        });
+    binary_lift(graph<0, TEdge, Index>& g, const vector<int>& roots = {Index}) : depth(g.adj.size()), p(g.adj.size()) {
+        vector<int> component;
+        for(int root : roots) {
+            dfs(g, [&](dfs_params<TEdge>& params) {
+                params.root = root;
+                params.pre_edge = [&](TEdge& e) {
+                    p[e.v].resize(__lg(depth[e.v] = depth[e.u] + 1) + 1);
+                    p[e.v][0] = e.u;
+                    build_ancestors(e.v);
+                };
+            }, component);
+        }
     }
     binary_lift(vector<int>& p0, vector<int>& topological_order) : depth(p0.size()), p(p0.size()) {
         for(int u : topological_order) {
@@ -28,6 +31,14 @@ template <typename TEdge, bool Index> struct binary_lift {
     }
     int kth_ancestor(int u, int k) {
         return k == 0 ? u : kth_ancestor(p[u][__lg(k & -k)], k - (k & -k));
+    }
+    template <typename Can> int bsearch_kth_ancestor(int u, const Can& can) {
+        for(int pow2 = (depth[u] ? __lg(depth[u]) : -1); pow2 >= 0; pow2--) {
+            if((1 << pow2) <= depth[u] and can(p[u][pow2])) {
+                u = p[u][pow2];
+            }
+        }
+        return u;
     }
     int lca(int u, int v) {
         if(depth[u] > depth[v]) swap(u, v);
