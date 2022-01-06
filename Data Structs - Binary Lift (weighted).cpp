@@ -6,16 +6,19 @@ using namespace std;
 template <typename T, bool Index> struct wedge_binary_lift : public binary_lift<wedge<T>, Index> {
     vector<vector<T>> pvals;
     const monoid<T> m;
-    wedge_binary_lift(graph<0, wedge<T>, Index>& g, const monoid<T>& m) 
+    wedge_binary_lift(graph<0, wedge<T>, Index>& g, const monoid<T>& m, const vector<int>& roots = {Index}) 
     : binary_lift<wedge<T>, Index>(g), pvals(g.adj.size()), m(m) {
-        dfs(g, [&](dfs_params<wedge<T>>& params) {
-            params.root = Index;
-            params.pre_edge = [&](wedge<T>& e) {
-                pvals[e.v].resize(__lg(this->depth[e.v]) + 1);
-                pvals[e.v][0] = e.w;
-                build_pvals(e.v);
-            };
-        });
+        for(int root : roots) {
+            dfs(g, [&](dfs_params<wedge<T>>& params) {
+                params.root = root;
+                params.pre_edge = [&](wedge<T>& e) {
+                    pvals[e.v].resize(__lg(this->depth[e.v]) + 1);
+                    pvals[e.v][0] = e.w;
+                    build_pvals(e.v);
+                };
+                params.reuse_previous_components = true;
+            });
+        }
     }
     void build_pvals(int u) {
         for(int pow2 = 1; pow2 <= __lg(this->depth[u]); pow2++) {

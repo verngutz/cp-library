@@ -5,7 +5,6 @@ template <typename TEdge, bool Index> struct binary_lift {
     vector<int> depth;
     vector<vector<int>> p;
     binary_lift(graph<0, TEdge, Index>& g, const vector<int>& roots = {Index}) : depth(g.adj.size()), p(g.adj.size()) {
-        vector<int> component;
         for(int root : roots) {
             dfs(g, [&](dfs_params<TEdge>& params) {
                 params.root = root;
@@ -14,7 +13,8 @@ template <typename TEdge, bool Index> struct binary_lift {
                     p[e.v][0] = e.u;
                     build_ancestors(e.v);
                 };
-            }, component);
+                params.reuse_previous_components = true;
+            });
         }
     }
     binary_lift(vector<int>& p0, vector<int>& topological_order) : depth(p0.size()), p(p0.size()) {
