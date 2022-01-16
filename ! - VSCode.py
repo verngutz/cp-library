@@ -23,9 +23,7 @@ extras = {
         'prefix': 'Benchmark',
         'body': [
             'auto begin_t = chrono::high_resolution_clock::now();',
-            'auto end_t = chrono::high_resolution_clock::now();',
-            'chrono::duration<double> elapsed = end_t - begin_t;',
-            'cerr << \\"Elapsed time: \\" << elapsed.count() << endl;'
+            'cerr << \\"Elapsed time: \\" << (chrono::duration<double>(chrono::high_resolution_clock::now() - begin_t)).count() << endl;'
         ]
     }, {
         'name': 'Memo Reset',
@@ -114,7 +112,7 @@ def get_name(file_name):
     except ValueError:
         return file_name[:file_name.index('.')]
 
-ignored = ('#include', 'using namespace std', 'using ll', 'template <typename T> using lim', 'from', 'import')
+ignored = ('#include "', '#include <bits', 'using namespace std', 'using ll', 'template <typename T> using lim', 'import')
 
 @functools.lru_cache
 def make_snippet(file_name, is_template=False):
