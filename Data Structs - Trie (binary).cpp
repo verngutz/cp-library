@@ -6,8 +6,8 @@ template <typename T> struct int_iterator {
     int i = numeric_limits<T>::digits - 1;
     bool operator<(const T& x) const { return i >= 0; }
     int_iterator& operator++() { i--; return *this; }
-    char operator()(const T& x) { return x & (T(1) << i); }
-    friend int operator-(const T& x, const int_iterator& it) { return i + 1; }
+    char operator()(const T& x) { return (x >> i) & 1; }
+    friend int operator-(const T& x, const int_iterator& it) { return it.i + 1; }
 };
 template <typename T> using binary_trie_base = trie<2, 0, int_iterator<T>>;
 template <typename T> struct binary_trie : public binary_trie_base<T> {
@@ -19,10 +19,10 @@ template <typename T> struct binary_trie : public binary_trie_base<T> {
             binary_trie_base<T>* t = this;
             T ans = 0;
             for(iterator i; i < x; ++i) {
-                if((*t)[i(x)]) {
-                    t = (*t)[i(x)];
+                if(t->get(i(x))) {
+                    t->get(i(x))
                 } else {
-                    t = (*t)[!i(x)];
+                    t->get(!i(x));
                     ans += T(1) << i;
                 }
             }
@@ -33,11 +33,11 @@ template <typename T> struct binary_trie : public binary_trie_base<T> {
     T mex(T x = 0) {
         binary_trie_base<T>* t = this;
         T ans = 0;
-        for(iterator i; i < x and t and (*t)[i(x)]; ++i) {
-            if((*t)[i(x)]->size < T(1) << i) {
-                t = (*t)[i(x)];
+        for(iterator i; i < x and t and t->get(i(x)); ++i) {
+            if(t->get(i(x))->size < T(1) << i) {
+                t = t->get(i(x));
             } else {
-                t = (*t)[!i(x)];
+                t = t->get(!i(x));
                 ans += T(1) << i;
             }
         }

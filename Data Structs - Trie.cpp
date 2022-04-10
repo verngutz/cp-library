@@ -42,13 +42,10 @@ struct trie {
     trie*& get(char c) {
         return children[c - alpha_start];
     }
-    trie*& operator[](char c) {
-        return get(c);
-    }
     trie* operator[](const typename iterator::type& s) {
         trie* t = this;
         for(iterator i; i < s; ++i) {
-            t = t ? (*t)[i(s)] : nullptr;
+            t = t ? t->get(i(s)) : nullptr;
         }
         return t;
     }
@@ -61,8 +58,9 @@ struct trie {
         for(iterator i; i < s; ++i) {
             t->size++;
             t->height = max(height, s - i);
-            t = (*t)[i(s)] ?: ((*t)[i(s)] = new trie());
+            t = t->get(i(s)) ?: (t->get(i(s)) = new trie());
         }
+        t->size++;
         t->n_ending++;
         return this;
     }
@@ -93,7 +91,7 @@ struct trie {
         trie* t = this;
         int ans = t->n_ending;
         for(iterator i; i < s; ++i) {
-            t = t ? (*t)[i(s)] : nullptr;
+            t = t ? t->get(i(s)) : nullptr;
             ans += t ? t->n_ending : 0;
         }
         return ans;
@@ -103,7 +101,7 @@ struct trie {
         trie* t = this;
         int ans = 0;
         for(iterator i; i < s; ++i) {
-            t = t ? (*t)[i(s)] : nullptr;
+            t = t ? t->get(i(s)) : nullptr;
             ans += t ? 1 : 0;
         }
         return ans;
