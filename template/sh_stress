@@ -23,8 +23,8 @@ while : ; do
         fi
     fi
     if [ -f "brute" ]; then
-        echo -e "\e[34m./${2:-brute} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt\e[39m"
-        if ! ./${2:-brute} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt ; then
+        echo -e "\e[34m./${3:-brute} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt\e[39m"
+        if ! ./${3:-brute} < /mnt/tmpfs/input.txt > /mnt/tmpfs/expected.txt ; then
             echo -e "\e[31mbrute runtime error\e[39m"
             echo -e "\e[33minput:\e[39m"
             cat /mnt/tmpfs/input.txt

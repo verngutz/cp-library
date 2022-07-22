@@ -2,8 +2,8 @@
 echo -e "\e[33m"
 echo -e "rm ${1:-solution}"
 rm ${1:-solution}
-echo -e "g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp"
-g++ -std=c++17 -Wall -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp
+echo -e "g++ -std=c++17 -Wall -Wshadow -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp"
+g++ -std=c++17 -Wall -Wshadow -g -fsanitize=address,undefined -fuse-ld=gold -DDEBUG -o ${1:-solution} ${1:-solution}.cpp
 echo -e "chmod +x ${1:-solution}"
 chmod +x ${1:-solution}
 if [ -f "input.txt" ]; then
