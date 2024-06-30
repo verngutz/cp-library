@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/bin/pypy3
 import colorama, itertools, os.path, sys, subprocess, termcolor
 from random import choice, randint, random, sample, shuffle
 from string import ascii_lowercase, ascii_uppercase

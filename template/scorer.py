@@ -1,3 +1,3 @@
-#!/usr/bin/python
+#!/usr/local/bin/pypy3
 import sys
-input = lambda: sys.stdin.readline().strip()
+def input(): return sys.stdin.readline().strip()
