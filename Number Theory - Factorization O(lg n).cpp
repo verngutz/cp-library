@@ -14,8 +14,8 @@ struct factorizer {
     }
     template <typename T, typename TEachPrime, typename TEachUniquePrime = function<void(T)>>
     void factorize(T n, TEachPrime&& each_prime, TEachUniquePrime&& each_unique_prime = [](T) {}) {
-        static_assert(is_convertible<decltype(each_prime), function<void(T)>>::value);
-        static_assert(is_convertible<decltype(each_unique_prime), function<void(T)>>::value);
+        static_assert(is_convertible<decltype(each_prime), function<void(T)>>::value, "each_prime must be void(T)");
+        static_assert(is_convertible<decltype(each_unique_prime), function<void(T)>>::value, "each_unique_prime must be void(T)");
         while(n > 1) {
             int d = largest_prime_divisor[n];
             each_prime(d);
