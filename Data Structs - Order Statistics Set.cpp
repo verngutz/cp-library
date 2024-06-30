@@ -7,7 +7,7 @@ template <typename T> using ordered_set = tree<T, null_type, less<T>, rb_tree_ta
 // usage:
 // ordered_set<int> s;
 // s.insert(key);
-// s.find_by_order(ordinality); returns iterator to key
-// s.order_of_key(key); returns ordinality
+// s.find_by_order(k); returns iterator to k-th smallest key (0-indexed)
+// s.order_of_key(key); returns number of elements less than key
 // s.erase(key);
 // do ordered_set<pair<Key, Id>> for multiset
