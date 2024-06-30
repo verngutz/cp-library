@@ -49,7 +49,7 @@ template <bool Directed, typename TEdge, bool Index> vector<int> eulerian_path(g
         dfs(odd_deg.empty() ? Index : odd_deg[0]);
         if(tour.size() == (g.edges.size() >> not Directed)) {
             reverse(tour.begin(), tour.end());
-            return move(tour);
+            return tour;
         } else {
             return {};
         }
