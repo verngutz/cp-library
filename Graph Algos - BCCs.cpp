@@ -27,10 +27,10 @@ template <bool Index> pair<vector<int>, vector<vector<int>>> find_bccs(graph<0, 
                 low[u] = min(low[u], vis[g(e).v]);
             }
         }
-        cut_node[u] &= from or n_children > 1;
+        cut_node[u] &= from != -1 or n_children > 1;
     };
     for(int u = Index; u < g.adj.size(); u++) if(not vis[u]) {
-        dfs(u, 0);
+        dfs(u, -1);
     }
     return {move(cut_node), move(bccs)};
 }
