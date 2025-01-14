@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include "Graph Structures - Edge (unweighted).cpp"
 #include "Graph Structures - Incidence List.cpp"
 using namespace std;
 template <typename TEdge, bool Index> pair<vector<int>, vector<vector<int>>> find_2eccs(graph<0, TEdge, Index>& g) {

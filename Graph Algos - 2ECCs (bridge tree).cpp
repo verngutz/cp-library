@@ -9,7 +9,7 @@ const vector<int>& cut_edge, const vector<vector<int>>& _2eccs) {
             _2ecc_id[u] = i + Index;
         }
     }
-    graph<0, edge, Index> bridge_tree(_2eccs.size());
+    graph<0, TEdge, Index> bridge_tree(_2eccs.size());
     for(int e = 0; e < g.edges.size(); e++) {
         if(cut_edge[e] and g(e).u < g(e).v) {
             bridge_tree.add_edge({_2ecc_id[g(e).u], _2ecc_id[g(e).v]});
