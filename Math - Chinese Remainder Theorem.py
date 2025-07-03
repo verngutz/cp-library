@@ -1,7 +1,11 @@
-import math
+from functools import reduce
+from math import gcd
+from operator import mul
+
 
 def lcm(a, b):
-    return a * b // math.gcd(a, b)
+    return a * b // gcd(a, b)
+
 
 def ex_gcd(a, b):
     if b == 0:
@@ -10,10 +14,12 @@ def ex_gcd(a, b):
         x, y = ex_gcd(b, a % b)
         return y, x - a // b * y
 
-def crt(a, b, m, n):
-    if (a - b) % math.gcd(m, n) == 0:
-        u, v = ex_gcd(m, n)
-        lamb = (a - b) // math.gcd(m, n)
-        return True, (b + n * v * lamb) % lcm(m, n) or lcm(m, n)
-    else:
-        return False, None
+
+def crt(system):
+    N = reduce(mul, (ni for ni, _ in system))
+    ans = 0
+    for ni, ai in system:
+        Ni = N // ni
+        Mi, _ = ex_gcd(Ni, ni)
+        ans += ai * Mi * Ni
+    return ans
